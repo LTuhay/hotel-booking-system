@@ -10,6 +10,12 @@ namespace HotelBookingSystem.Infrastructure.Repository
         public UserRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _context.Set<User>()
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 
 }
