@@ -1,6 +1,4 @@
-﻿
-
-namespace HotelBookingSystem.Infrastructure
+﻿namespace HotelBookingSystem.Infrastructure.PasswordHasher
 {
     public interface IPasswordHasher
     {

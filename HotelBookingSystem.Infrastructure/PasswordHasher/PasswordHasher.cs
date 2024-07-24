@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HotelBookingSystem.Infrastructure
+namespace HotelBookingSystem.Infrastructure.PasswordHasher
 {
     public class PasswordHasher : IPasswordHasher
     {

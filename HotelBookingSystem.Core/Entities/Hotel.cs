@@ -18,7 +18,6 @@ namespace HotelBookingSystem.Domain.Entities
         public ICollection<Room> Rooms { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<GuestReview> GuestReviews { get; set; }
-        public ICollection<FeaturedDeal> FeaturedDeals { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

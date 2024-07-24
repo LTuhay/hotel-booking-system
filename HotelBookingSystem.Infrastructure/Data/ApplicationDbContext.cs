@@ -14,7 +14,6 @@ namespace HotelBookingSystem.Infrastructure.Data
 
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<FeaturedDeal> FeaturedDeals { get; set; }
         public DbSet<GuestReview> GuestReviews { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -68,11 +67,6 @@ namespace HotelBookingSystem.Infrastructure.Data
                 .HasOne(gr => gr.Hotel)
                 .WithMany(h => h.GuestReviews)
                 .HasForeignKey(gr => gr.HotelId);
-
-            modelBuilder.Entity<FeaturedDeal>()
-                .HasOne(fd => fd.Hotel)
-                .WithMany(h => h.FeaturedDeals)
-                .HasForeignKey(fd => fd.HotelId);
 
         }
    

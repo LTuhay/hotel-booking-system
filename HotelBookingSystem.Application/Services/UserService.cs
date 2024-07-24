@@ -2,7 +2,7 @@
 using HotelBookingSystem.Application.DTO.UserDTO;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces;
-using HotelBookingSystem.Infrastructure;
+using HotelBookingSystem.Infrastructure.PasswordHasher;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
