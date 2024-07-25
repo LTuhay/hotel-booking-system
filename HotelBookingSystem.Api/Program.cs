@@ -12,6 +12,8 @@ using HotelBookingSystem.Domain.Enums;
 using HotelBookingSystem.Infrastructure.PasswordHasher;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Application.Services;
+using HotelBookingSystem.Domain.Interfaces;
+using HotelBookingSystem.Application.DTO.HotelDTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,7 @@ builder.Services.AddControllers()
         fv.RegisterValidatorsFromAssemblyContaining<PaymentRequestValidator>();
         fv.RegisterValidatorsFromAssemblyContaining<RoomRequestValidator>();
         fv.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>();
+        fv.RegisterValidatorsFromAssemblyContaining<HotelSearchParametersValidator>();
     });
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
@@ -82,6 +85,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 

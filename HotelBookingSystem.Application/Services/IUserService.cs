@@ -1,6 +1,4 @@
-﻿
-
-using HotelBookingSystem.Application.DTO.UserDTO;
+﻿using HotelBookingSystem.Application.DTO.UserDTO;
 
 namespace HotelBookingSystem.Application.Services
 {

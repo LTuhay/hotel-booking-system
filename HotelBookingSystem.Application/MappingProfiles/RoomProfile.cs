@@ -12,6 +12,7 @@ namespace HotelBookingSystem.Application.MappingProfiles
         {
             CreateMap<RoomRequest, Room>();
             CreateMap<Room, RoomResponse>();
+
         }
     }
 }

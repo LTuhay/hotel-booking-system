@@ -31,7 +31,6 @@ namespace HotelBookingSystem.Api.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("{roomId}")]
         public async Task<IActionResult> GetRoomById(int roomId)
         {

@@ -3,8 +3,8 @@ using AutoMapper.Collection;
 using AutoMapper;
 using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Domain.Entities;
-using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Infrastructure.Repository;
+using HotelBookingSystem.Domain.Interfaces.Repository;
 
 namespace HotelBookingSystem.Application
 {

@@ -12,9 +12,9 @@ namespace HotelBookingSystem.Domain.Entities
         public int CityId { get; set; }
         public City City { get; set; }
         public int StarRating { get; set; }
-        public decimal Price { get; set; }
         public string Description { get; set; }
         public string ThumbnailUrl { get; set; }
+        public IList<HotelAmenity> Amenities { get; set; }
         public ICollection<Room> Rooms { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<GuestReview> GuestReviews { get; set; }

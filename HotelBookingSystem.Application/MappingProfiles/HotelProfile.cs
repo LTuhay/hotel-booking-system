@@ -11,7 +11,9 @@ namespace HotelBookingSystem.Application.MappingProfiles
         public HotelProfile() 
         {
             CreateMap<HotelRequest, Hotel>();
-            CreateMap<Hotel, HotelResponse>();
+            CreateMap<Hotel, HotelResponse>()
+                .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
+                .ForMember(dest => dest.GuestReviews, opt => opt.MapFrom(src => src.GuestReviews));
         }
     }
 }

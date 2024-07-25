@@ -1,5 +1,4 @@
-﻿
-using HotelBookingSystem.Domain.Interfaces;
+﻿using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +21,7 @@ namespace HotelBookingSystem.Infrastructure.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -34,10 +33,10 @@ namespace HotelBookingSystem.Infrastructure.Repository
             return entity;
         }
 
-        public async Task<int> UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            return await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -50,6 +49,11 @@ namespace HotelBookingSystem.Infrastructure.Repository
 
             _dbSet.Remove(entity);
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _dbSet.FindAsync(id) != null;
         }
     }
 }

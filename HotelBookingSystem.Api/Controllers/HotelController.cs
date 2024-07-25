@@ -32,7 +32,6 @@ namespace HotelBookingSystem.Api.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("{hotelId}")]
         public async Task<IActionResult> GetHotelById(int hotelId)
         {
@@ -82,6 +81,13 @@ namespace HotelBookingSystem.Api.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] HotelSearchParameters searchParameters)
+        {
+            var result = await _hotelService.SearchHotelsAsync(searchParameters);
+            return Ok(result);
         }
     }
 }

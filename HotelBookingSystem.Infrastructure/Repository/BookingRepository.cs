@@ -1,5 +1,5 @@
 ﻿using HotelBookingSystem.Domain.Entities;
-using HotelBookingSystem.Domain.Interfaces;
+using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
