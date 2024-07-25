@@ -1,8 +1,6 @@
 using FluentValidation.AspNetCore;
 using HotelBookingSystem.Application.MappingProfiles;
 using HotelBookingSystem.Application.Validators;
-using HotelBookingSystem.Application.Services;
-using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Infrastructure.Data;
 using HotelBookingSystem.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +10,8 @@ using System.Text;
 using HotelBookingSystem.Application.JWT;
 using HotelBookingSystem.Domain.Enums;
 using HotelBookingSystem.Infrastructure.PasswordHasher;
+using HotelBookingSystem.Domain.Interfaces.Repository;
+using HotelBookingSystem.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,29 +32,28 @@ builder.Services.AddControllers()
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
 });
+
 
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -78,7 +77,12 @@ builder.Services.AddScoped<IGuestReviewRepository, GuestReviewRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();

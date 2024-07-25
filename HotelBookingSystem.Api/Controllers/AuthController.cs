@@ -1,6 +1,7 @@
 ﻿using HotelBookingSystem.Application.DTO.UserDTO;
 using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HotelBookingSystem.Api.Controllers
 {
@@ -42,5 +43,6 @@ namespace HotelBookingSystem.Api.Controllers
                 return Unauthorized(new { message = ex.Message });
             }
         }
+
     }
 }
