@@ -25,23 +25,42 @@ namespace HotelBookingSystem.Api.Controllers
                 var room = await _roomService.CreateRoomAsync(request);
                 return CreatedAtAction(nameof(GetRoomById), new { roomId = room.RoomId }, room);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
 
         [HttpGet("{roomId}")]
         public async Task<IActionResult> GetRoomById(int roomId)
         {
-            var room = await _roomService.GetRoomByIdAsync(roomId);
-
-            if (room == null)
+            try
             {
-                return NotFound();
-            }
+                var room = await _roomService.GetRoomByIdAsync(roomId);
 
-            return Ok(room);
+                return Ok(room);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
+;
         }
 
         [Authorize(Policy = "AdminPolicy")]
@@ -53,13 +72,21 @@ namespace HotelBookingSystem.Api.Controllers
                 var room = await _roomService.UpdateRoomAsync(roomId, request);
                 return Ok(room);
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
 
@@ -72,13 +99,13 @@ namespace HotelBookingSystem.Api.Controllers
                 await _roomService.DeleteRoomAsync(roomId);
                 return NoContent();
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
     }

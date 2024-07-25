@@ -14,6 +14,7 @@ using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Application.DTO.HotelDTO;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,12 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
+    options.AddPolicy("AdminOrCustomer", policy =>
+    {
+        policy.RequireAssertion(context =>
+            context.User.IsInRole(UserRole.Admin.ToString()) ||
+            context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier));
+    });
 });
 
 
@@ -85,9 +92,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

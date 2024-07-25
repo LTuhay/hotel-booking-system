@@ -25,9 +25,17 @@ namespace HotelBookingSystem.Api.Controllers
                 var city = await _cityService.CreateCityAsync(request);
                 return CreatedAtAction(nameof(GetCityById), new { id = city.CityId }, city);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
 
@@ -42,6 +50,10 @@ namespace HotelBookingSystem.Api.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
 
@@ -58,9 +70,17 @@ namespace HotelBookingSystem.Api.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
 
@@ -76,6 +96,10 @@ namespace HotelBookingSystem.Api.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
     }
