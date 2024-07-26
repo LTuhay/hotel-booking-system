@@ -1,8 +1,10 @@
-﻿using HotelBookingSystem.Application.DTO.HotelDTO;
+﻿using HotelBookingSystem.Application.DTO.GuestReviewDTO;
+using HotelBookingSystem.Application.DTO.HotelDTO;
 using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace HotelBookingSystem.Api.Controllers
 {
@@ -11,10 +13,12 @@ namespace HotelBookingSystem.Api.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelService _hotelService;
+        private readonly IGuestReviewService _guestReviewService;
 
-        public HotelController(IHotelService hotelService)
+        public HotelController(IHotelService hotelService, IGuestReviewService guestReviewService)
         {
             _hotelService = hotelService;
+            _guestReviewService = guestReviewService;
         }
 
         [Authorize(Policy = "AdminPolicy")]
@@ -130,6 +134,53 @@ namespace HotelBookingSystem.Api.Controllers
             catch (InvalidOperationException ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
+        }
+
+        [HttpPost("{hotelId}/reviews")]
+        [Authorize(Policy= "AdminOrCustomer")]
+        public async Task<IActionResult> AddGuestReview([FromBody] GuestReviewRequest reviewRequest)
+        {
+            try
+            {
+                var reviewResponse = await _guestReviewService.AddReviewAsync(reviewRequest);
+                return Ok(reviewResponse);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
+
+        }
+
+        [Authorize(Policy = "AdminOrCustomer")]
+        [HttpDelete("{hotelId}/reviews/{reviewId}")]
+        public async Task<IActionResult> DeleteGuestReview(int reviewId)
+        {
+            try
+            {
+                await _guestReviewService.DeleteReviewAsync(reviewId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {

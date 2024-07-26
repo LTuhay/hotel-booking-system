@@ -56,6 +56,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
+    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
     options.AddPolicy("AdminOrCustomer", policy =>
     {
         policy.RequireAssertion(context =>
@@ -95,6 +96,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IGuestReviewService, GuestReviewService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

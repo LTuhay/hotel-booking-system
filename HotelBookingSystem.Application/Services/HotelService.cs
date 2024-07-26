@@ -24,9 +24,7 @@ namespace HotelBookingSystem.Application.Services
         {
             var hotel = _mapper.Map<Hotel>(request);
             if (!await _cityRepository.ExistsAsync(hotel.CityId))
-            {
                 throw new KeyNotFoundException("City not found");
-            }
             hotel.CreatedAt = DateTime.UtcNow;
             hotel.UpdatedAt = DateTime.UtcNow;
 
@@ -49,6 +47,8 @@ namespace HotelBookingSystem.Application.Services
 
         public async Task DeleteHotelAsync(int hotelId)
         {
+            if (!await _hotelRepository.ExistsAsync(hotelId))
+                throw new KeyNotFoundException("Hotel not found");
             await _hotelRepository.DeleteAsync(hotelId);
         }
 
@@ -56,7 +56,7 @@ namespace HotelBookingSystem.Application.Services
         {
             var hotel = await _hotelRepository.GetByIdAsync(hotelId);
             if (hotel == null)
-                return null;
+                throw new KeyNotFoundException("Hotel not found");
 
             return _mapper.Map<HotelResponse>(hotel);
         }

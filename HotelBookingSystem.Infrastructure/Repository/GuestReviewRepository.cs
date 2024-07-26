@@ -10,6 +10,12 @@ namespace HotelBookingSystem.Infrastructure.Repository
         public GuestReviewRepository(ApplicationDbContext context) : base(context)
         {
         }
+        public async Task<IEnumerable<GuestReview>> GetReviewsByHotelIdAsync(int hotelId)
+        {
+            return await _context.GuestReviews
+                .Where(r => r.HotelId == hotelId)
+                .ToListAsync();
+        }
     }
 
 }

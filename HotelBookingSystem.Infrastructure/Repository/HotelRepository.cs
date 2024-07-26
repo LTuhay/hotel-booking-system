@@ -118,7 +118,8 @@ namespace HotelBookingSystem.Infrastructure.Repository
         public override async Task<Hotel> GetByIdAsync(int id)
         {
             return await _context.Hotels
-                .Include(h => h.Rooms) 
+                .Include(h => h.Rooms)
+                .ThenInclude(r=> r.Bookings)
                 .Include(h => h.GuestReviews)
                 .FirstOrDefaultAsync(h => h.HotelId == id);
         }
