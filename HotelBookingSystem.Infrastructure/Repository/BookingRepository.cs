@@ -10,6 +10,13 @@ namespace HotelBookingSystem.Infrastructure.Repository
         public BookingRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public override async Task<Booking> GetByIdAsync(int bookingId)
+        {
+            return await _context.Bookings
+                                 .Include(b => b.Payment)
+                                 .FirstOrDefaultAsync(b => b.BookingId == bookingId);
+        }
     }
 
 }

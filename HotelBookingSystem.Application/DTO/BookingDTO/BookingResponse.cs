@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
+using HotelBookingSystem.Application.DTO.PaymentDTO;
 using HotelBookingSystem.Domain.Entities;
 
 
@@ -19,6 +20,7 @@ namespace HotelBookingSystem.Application.DTO.BookingDTO
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public decimal TotalPrice { get; set; }
+        public PaymentResponse? Payment { get; set; }
     }
 
 }

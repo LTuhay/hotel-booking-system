@@ -1,4 +1,5 @@
 ﻿
+using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Domain.Entities;
 
 namespace HotelBookingSystem.Application.DTO.PaymentDTO

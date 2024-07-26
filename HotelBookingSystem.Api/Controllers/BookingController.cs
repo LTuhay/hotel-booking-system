@@ -4,6 +4,7 @@ using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace HotelBookingSystem.Api.Controllers
 {
     [ApiController]
@@ -12,10 +13,12 @@ namespace HotelBookingSystem.Api.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly IPdfService _pdfService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IPdfService pdfService)
         {
             _bookingService = bookingService;
+            _pdfService = pdfService;
         }
 
         [HttpPost]
@@ -101,6 +104,31 @@ namespace HotelBookingSystem.Api.Controllers
             {
                 await _bookingService.CancelBookingAsync(bookingId);
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
+        }
+
+        [HttpGet("{bookingId}/pdf")]
+        public async Task<IActionResult> GetBookingPdf(int bookingId)
+        {
+            try
+            {
+                var bookingResponse = await _bookingService.GetBookingDetailsAsync(bookingId);
+                if (bookingResponse == null)
+                {
+                    return NotFound(new { message = "Booking not found" });
+                }
+
+                var pdfBytes = _pdfService.GenerateBookingPdf(bookingResponse);
+
+                return File(pdfBytes, "application/pdf", $"Booking_{bookingId}.pdf");
             }
             catch (KeyNotFoundException ex)
             {

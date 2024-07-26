@@ -93,6 +93,8 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
