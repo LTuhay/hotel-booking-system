@@ -11,8 +11,9 @@ namespace HotelBookingSystem.Application.MappingProfiles
         public RoomProfile() 
         {
             CreateMap<RoomRequest, Room>();
-            CreateMap<Room, RoomResponse>();
-
+            CreateMap<Room, RoomResponse>()
+                        .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src =>
+                            src.Bookings.All(b => b.CheckOutDate <= DateTime.Now || b.CheckInDate >= DateTime.Now)));
         }
     }
 }

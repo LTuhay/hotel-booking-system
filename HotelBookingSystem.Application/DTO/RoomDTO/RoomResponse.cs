@@ -16,7 +16,10 @@ namespace HotelBookingSystem.Application.DTO.RoomDTO
         public int AdultCapacity { get; set; }
         public int ChildCapacity { get; set; }
         public IList<string> ImagesUrl { get; set; }
+        public bool IsAvailable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+
     }
 }

@@ -17,6 +17,7 @@ namespace HotelBookingSystem.Infrastructure.Repository
         {
             var query = _context.Hotels
                 .Include(h => h.Rooms)
+                .ThenInclude(r => r.Bookings)
                 .Include(h => h.GuestReviews)
                 .AsQueryable();
 

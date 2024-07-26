@@ -15,5 +15,12 @@ namespace HotelBookingSystem.Infrastructure.Repository
             await _context.Set<Room>().AddRangeAsync(rooms);
             await _context.SaveChangesAsync();
         }
+
+        public override async Task<Room> GetByIdAsync(int id)
+        {
+            return await _context.Rooms
+                .Include(r => r.Bookings)
+                .FirstOrDefaultAsync(r => r.RoomId == id);
+        }
     }
 }

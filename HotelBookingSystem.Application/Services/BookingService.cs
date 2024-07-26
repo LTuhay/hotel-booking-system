@@ -46,6 +46,10 @@ namespace HotelBookingSystem.Application.Services
 
             var checkInDate = bookingRequest.CheckInDate;
             var checkOutDate = bookingRequest.CheckOutDate;
+
+            var isRoomAvailable = room.Bookings.All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate);
+            if (!isRoomAvailable) throw new InvalidOperationException("Room is already booked for the specified dates");
+
             var totalNights = (checkOutDate - checkInDate).Days;
             var pricePerNight = room.FeaturedDeal && room.DiscountedPrice.HasValue
                 ? room.DiscountedPrice.Value

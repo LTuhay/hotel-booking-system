@@ -68,6 +68,9 @@ namespace HotelBookingSystem.Application.Services
             var totalResults = hotels.Count;
             var totalPages = (int)Math.Ceiling(totalResults / (double)searchParameters.PageSize);
             var hotelResponses = _mapper.Map<List<HotelResponse>>(hotels);
+
+            CheckRoomsAvailability(searchParameters, hotels, hotelResponses);
+
             var paginatedList = new PaginatedList<HotelResponse>
             {
                 TotalResults = totalResults,
@@ -78,6 +81,40 @@ namespace HotelBookingSystem.Application.Services
             };
 
             return paginatedList;
+        }
+
+        private static void CheckRoomsAvailability(HotelSearchParameters searchParameters, IList<Hotel> hotels, List<HotelResponse> hotelResponses)
+        {
+            DateTime? checkInDate = null;
+            DateTime? checkOutDate = null;
+            if (!string.IsNullOrEmpty(searchParameters.CheckInDate) && !string.IsNullOrEmpty(searchParameters.CheckOutDate))
+            {
+                if (DateTime.TryParse(searchParameters.CheckInDate, out DateTime parsedCheckInDate) &&
+                    DateTime.TryParse(searchParameters.CheckOutDate, out DateTime parsedCheckOutDate))
+                {
+                    checkInDate = parsedCheckInDate;
+                    checkOutDate = parsedCheckOutDate;
+                }
+            }
+
+            foreach (var hotelResponse in hotelResponses)
+            {
+                var hotel = hotels.First(h => h.HotelId == hotelResponse.HotelId);
+                foreach (var roomResponse in hotelResponse.Rooms)
+                {
+                    var room = hotel.Rooms.First(r => r.RoomId == roomResponse.RoomId);
+                    if (checkInDate.HasValue && checkOutDate.HasValue)
+                    {
+                        roomResponse.IsAvailable = room.Bookings
+                            .All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate);
+                    }
+                    else
+                    {
+                        roomResponse.IsAvailable = room.Bookings
+                            .All(b => b.CheckOutDate <= DateTime.Now || b.CheckInDate >= DateTime.Now);
+                    }
+                }
+            }
         }
     }
 }
