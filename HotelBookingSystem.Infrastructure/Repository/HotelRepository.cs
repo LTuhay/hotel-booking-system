@@ -123,6 +123,34 @@ namespace HotelBookingSystem.Infrastructure.Repository
                 .Include(h => h.GuestReviews)
                 .FirstOrDefaultAsync(h => h.HotelId == id);
         }
+
+        public async Task<IEnumerable<Hotel>> GetFeaturedDealsAsync(int limit)
+        {
+
+            var hotelsWithFeaturedDeals = await _context.Hotels
+                   .Include(h => h.Rooms)  
+                   .Include(h => h.GuestReviews) 
+                   .Where(h => h.Rooms != null && h.Rooms.Any(r => r.FeaturedDeal))
+                   .ToListAsync();
+
+            var sortedHotels = hotelsWithFeaturedDeals
+                .Select(hotel => new
+                {
+                    Hotel = hotel,
+                    MinDiscountedPrice = hotel.Rooms != null
+                        ? hotel.Rooms
+                            .Where(r => r.FeaturedDeal)
+                            .Select(r => r.DiscountedPrice ?? decimal.MaxValue)  
+                            .Min()
+                        : decimal.MaxValue
+                })
+                .OrderBy(h => h.MinDiscountedPrice)
+                .Take(limit)
+                .Select(h => h.Hotel)
+                .ToList();
+
+            return sortedHotels;
+        }
     }
 
 }

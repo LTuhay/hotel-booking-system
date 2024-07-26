@@ -116,5 +116,11 @@ namespace HotelBookingSystem.Application.Services
                 }
             }
         }
+
+        public async Task<IEnumerable<HotelResponse>> GetFeaturedDealsAsync(int limit)
+        {
+            var hotels = await _hotelRepository.GetFeaturedDealsAsync(limit);
+            return hotels.Select(hotel => _mapper.Map<HotelResponse>(hotel)).ToList();
+        }
     }
 }

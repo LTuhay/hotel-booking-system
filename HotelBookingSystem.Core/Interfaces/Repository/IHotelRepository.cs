@@ -5,6 +5,7 @@ namespace HotelBookingSystem.Domain.Interfaces.Repository
     public interface IHotelRepository : IRepository<Hotel>
     {
         Task<IList<Hotel>> SearchAsync(ISearchParameters searchParameters);
+        Task<IEnumerable<Hotel>> GetFeaturedDealsAsync(int limit);
     }
 
 }

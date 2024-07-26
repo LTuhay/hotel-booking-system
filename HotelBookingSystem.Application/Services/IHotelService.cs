@@ -1,4 +1,5 @@
 ﻿using HotelBookingSystem.Application.DTO.HotelDTO;
+using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces;
 
 namespace HotelBookingSystem.Application.Services
@@ -10,5 +11,6 @@ namespace HotelBookingSystem.Application.Services
         Task DeleteHotelAsync(int hotelId);
         Task<HotelResponse> GetHotelByIdAsync(int hotelId);
         Task<IPaginatedList<HotelResponse>> SearchHotelsAsync(HotelSearchParameters searchParameters);
+        Task<IEnumerable<HotelResponse>> GetFeaturedDealsAsync(int limit);
     }
 }

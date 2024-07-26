@@ -142,7 +142,7 @@ namespace HotelBookingSystem.Api.Controllers
         }
 
         [HttpPost("{hotelId}/reviews")]
-        [Authorize(Policy= "AdminOrCustomer")]
+        [Authorize(Policy = "AdminOrCustomer")]
         public async Task<IActionResult> AddGuestReview([FromBody] GuestReviewRequest reviewRequest)
         {
             try
@@ -187,5 +187,24 @@ namespace HotelBookingSystem.Api.Controllers
                 return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
+
+
+
+        [HttpGet("featured-deals")]
+        public async Task<IActionResult> GetFeaturedDeals([FromQuery] int? limit)
+        {
+            //try
+            //{
+                var effectiveLimit = limit.HasValue && limit.Value > 0 ? limit.Value : 5;
+                var deals = await _hotelService.GetFeaturedDealsAsync(effectiveLimit);
+                return Ok(deals);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving special offers.");
+            //}
+        }
     }
+
+
 }
