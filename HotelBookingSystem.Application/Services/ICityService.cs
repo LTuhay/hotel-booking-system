@@ -8,5 +8,6 @@ namespace HotelBookingSystem.Application.Services
         Task<CityResponse> GetCityByIdAsync(int id);
         Task<CityResponse> UpdateCityAsync(int id, CityRequest request);
         Task DeleteCityAsync(int id);
+        Task<IEnumerable<CityResponse>> GetPopularCitiesAsync(int limit);
     }
 }

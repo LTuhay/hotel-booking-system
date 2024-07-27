@@ -142,7 +142,7 @@ namespace HotelBookingSystem.Api.Controllers
         }
 
         [HttpPost("{hotelId}/reviews")]
-        [Authorize(Policy = "AdminOrCustomer")]
+        [Authorize(Policy = "CustomerPolicy")]
         public async Task<IActionResult> AddGuestReview([FromBody] GuestReviewRequest reviewRequest)
         {
             try

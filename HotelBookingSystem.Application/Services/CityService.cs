@@ -55,5 +55,12 @@ namespace HotelBookingSystem.Application.Services
 
             await _cityRepository.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<CityResponse>> GetPopularCitiesAsync(int limit)
+        {
+            var cities = await _cityRepository.GetPopularCitiesAsync(limit);
+            return _mapper.Map<IEnumerable<CityResponse>>(cities);
+                
+        }
     }
 }

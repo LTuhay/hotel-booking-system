@@ -11,6 +11,7 @@ namespace HotelBookingSystem.Application.Services
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly ICityRepository _cityRepository;
         private readonly IRoomRepository _roomRepository;
         private readonly IHotelRepository _hotelRepository;
         private readonly IUserRepository _userRepository;
@@ -23,7 +24,8 @@ namespace HotelBookingSystem.Application.Services
             IHotelRepository hotelRepository,
             IUserRepository userRepository,
             IMapper mapper,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            ICityRepository cityRepository)
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
@@ -31,6 +33,7 @@ namespace HotelBookingSystem.Application.Services
             _userRepository = userRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _cityRepository = cityRepository;
         }
 
         public async Task<BookingResponse> CreateBookingAsync(BookingRequest bookingRequest)
@@ -62,12 +65,27 @@ namespace HotelBookingSystem.Application.Services
 
             await _bookingRepository.AddAsync(booking);
 
+            var city = await _cityRepository.GetByIdAsync(booking.Hotel.CityId);
+            if (city != null)
+            {
+                city.Visitors++;
+                await _cityRepository.UpdateAsync(city);
+            }
+
             return _mapper.Map<BookingResponse>(booking);
         }
 
         public async Task CancelBookingAsync(int bookingId)
         {
-            if (!await _bookingRepository.ExistsAsync(bookingId)) throw new KeyNotFoundException("Booking not found");
+            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+            if (booking == null) throw new KeyNotFoundException("Booking not found");
+
+            var city = await _cityRepository.GetByIdAsync(booking.Hotel.CityId);
+            if (city != null)
+            {
+                city.Visitors--;
+                await _cityRepository.UpdateAsync(city);
+            }
             _bookingRepository.DeleteAsync(bookingId);
         }
 

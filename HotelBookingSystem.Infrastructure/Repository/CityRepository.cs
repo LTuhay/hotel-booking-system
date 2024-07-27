@@ -10,6 +10,14 @@ namespace HotelBookingSystem.Infrastructure.Repository
         public CityRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public async Task<IEnumerable<City>> GetPopularCitiesAsync(int limit)
+        {
+            return await _context.Cities
+                .OrderByDescending(c => c.Visitors)
+                .Take(limit)
+                .ToListAsync();
+        }
     }
 
 }

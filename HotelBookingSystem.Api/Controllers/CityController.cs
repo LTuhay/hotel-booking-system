@@ -102,5 +102,12 @@ namespace HotelBookingSystem.Api.Controllers
                 return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
+
+        [HttpGet("popular-cities")]
+        public async Task<IActionResult> GetPopularCities([FromQuery] int limit = 5)
+        {
+            var popularCities = await _cityService.GetPopularCitiesAsync(limit);
+            return Ok(popularCities);
+        }
     }
 }
