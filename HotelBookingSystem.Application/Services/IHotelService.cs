@@ -12,5 +12,6 @@ namespace HotelBookingSystem.Application.Services
         Task<HotelResponse> GetHotelByIdAsync(int hotelId);
         Task<IPaginatedList<HotelResponse>> SearchHotelsAsync(HotelSearchParameters searchParameters);
         Task<IEnumerable<HotelResponse>> GetFeaturedDealsAsync(int limit);
+        Task<IEnumerable<HotelResponse>> GetRecentHotelsAsync(int limit);
     }
 }

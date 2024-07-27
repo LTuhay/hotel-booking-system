@@ -151,6 +151,19 @@ namespace HotelBookingSystem.Infrastructure.Repository
 
             return sortedHotels;
         }
+
+        public async Task<IEnumerable<Hotel>> GetRecientHotelsAsync(int userId, int limit)
+        {
+            var currentDate = DateTime.UtcNow;
+            return await _context.Hotels
+                     .Where(h => h.Bookings.Any(b => b.UserId == userId && b.CheckOutDate < currentDate))
+                     .OrderByDescending(h => h.Bookings
+                         .Where(b => b.UserId == userId)
+                         .Max(b => b.CheckOutDate))
+                     .Distinct()
+                     .Take(limit)
+                     .ToListAsync();
+        }
     }
 
 }

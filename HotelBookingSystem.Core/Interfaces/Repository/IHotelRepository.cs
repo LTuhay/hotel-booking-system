@@ -6,6 +6,7 @@ namespace HotelBookingSystem.Domain.Interfaces.Repository
     {
         Task<IList<Hotel>> SearchAsync(ISearchParameters searchParameters);
         Task<IEnumerable<Hotel>> GetFeaturedDealsAsync(int limit);
+        Task<IEnumerable<Hotel>> GetRecientHotelsAsync(int userId, int limit);
     }
 
 }

@@ -1,8 +1,10 @@
 ﻿
 using HotelBookingSystem.Application.DTO.BookingDTO;
+using HotelBookingSystem.Application.DTO.HotelDTO;
 using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace HotelBookingSystem.Api.Controllers
@@ -139,7 +141,6 @@ namespace HotelBookingSystem.Api.Controllers
                 return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
             }
         }
-
 
     }
 }

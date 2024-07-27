@@ -1,10 +1,10 @@
-﻿using HotelBookingSystem.Application.DTO.GuestReviewDTO;
+﻿
+using HotelBookingSystem.Application.DTO.GuestReviewDTO;
 using HotelBookingSystem.Application.DTO.HotelDTO;
 using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
+
 
 namespace HotelBookingSystem.Api.Controllers
 {
@@ -193,16 +193,35 @@ namespace HotelBookingSystem.Api.Controllers
         [HttpGet("featured-deals")]
         public async Task<IActionResult> GetFeaturedDeals([FromQuery] int? limit)
         {
-            //try
-            //{
+            try
+            {
                 var effectiveLimit = limit.HasValue && limit.Value > 0 ? limit.Value : 5;
                 var deals = await _hotelService.GetFeaturedDealsAsync(effectiveLimit);
                 return Ok(deals);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving special offers.");
-            //}
+        }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving special offers.");
+    }
+}
+
+        [Authorize(Policy = "AdminOrCustomer")]
+        [HttpGet("recent-hotels")]
+        public async Task<IActionResult> GetRecentHotels([FromQuery] int limit = 5)
+        {
+            try
+            {
+                var recentHotels = await _hotelService.GetRecentHotelsAsync(limit);
+                return Ok(recentHotels);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
+            }
         }
     }
 

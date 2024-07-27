@@ -17,6 +17,7 @@ namespace HotelBookingSystem.Infrastructure.Repository
                                  .Include(b => b.Payment)
                                  .FirstOrDefaultAsync(b => b.BookingId == bookingId);
         }
+
     }
 
 }

@@ -4,6 +4,8 @@ using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Domain.Utilities;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace HotelBookingSystem.Application.Services
 {
@@ -12,12 +14,14 @@ namespace HotelBookingSystem.Application.Services
         private readonly IHotelRepository _hotelRepository;
         private readonly ICityRepository _cityRepository;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HotelService(IHotelRepository hotelRepository, IMapper mapper, ICityRepository cityRepository)
+        public HotelService(IHotelRepository hotelRepository, IMapper mapper, ICityRepository cityRepository, IHttpContextAccessor httpContextAccessor)
         {
             _hotelRepository = hotelRepository;
             _mapper = mapper;
             _cityRepository = cityRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<HotelResponse> CreateHotelAsync(HotelRequest request)
@@ -121,6 +125,17 @@ namespace HotelBookingSystem.Application.Services
         {
             var hotels = await _hotelRepository.GetFeaturedDealsAsync(limit);
             return hotels.Select(hotel => _mapper.Map<HotelResponse>(hotel)).ToList();
+        }
+
+        public async Task<IEnumerable<HotelResponse>> GetRecentHotelsAsync(int limit)
+        {
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException("User not found"));
+            var recentHotels = await _hotelRepository.GetRecientHotelsAsync(userId,limit);
+
+            if (recentHotels == null || !recentHotels.Any())
+                throw new KeyNotFoundException("No recently visited hotels found.");
+
+            return _mapper.Map<IEnumerable<HotelResponse>>(recentHotels);
         }
     }
 }
