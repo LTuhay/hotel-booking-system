@@ -26,10 +26,12 @@ namespace HotelBookingSystem.Application.Services
                     .SetTextAlignment(TextAlignment.CENTER)
                     .SetFontSize(20));
 
-                document.Add(new Paragraph($"Booking ID: {bookingResponse.BookingId}"));
+                document.Add(new Paragraph($"Booking number: {bookingResponse.BookingId}"));
                 document.Add(new Paragraph($"User Name: {bookingResponse.UserFirstName} {bookingResponse.UserLastName}"));
                 document.Add(new Paragraph($"Hotel Name: {bookingResponse.HotelName}"));
+                document.Add(new Paragraph($"Hotel Address: {bookingResponse.HotelAddress}"));
                 document.Add(new Paragraph($"Room Type: {bookingResponse.RoomType}"));
+                document.Add(new Paragraph($"Special Requests: {bookingResponse.SpecialRequests}"));
                 document.Add(new Paragraph($"Check-in Date: {bookingResponse.CheckInDate.ToString("d")}"));
                 document.Add(new Paragraph($"Check-out Date: {bookingResponse.CheckOutDate.ToString("d")}"));
                 document.Add(new Paragraph($"Total Price: ${bookingResponse.TotalPrice}"));
@@ -37,7 +39,7 @@ namespace HotelBookingSystem.Application.Services
                 if (bookingResponse.Payment != null)
                 {
                     document.Add(new Paragraph("Payment Details"));
-                    document.Add(new Paragraph($"Payment ID: {bookingResponse.Payment.PaymentId}"));
+                    document.Add(new Paragraph($"Payment number: {bookingResponse.Payment.PaymentId}"));
                     document.Add(new Paragraph($"Amount: ${bookingResponse.Payment.Amount}"));
                     document.Add(new Paragraph($"Payment Date: {bookingResponse.Payment.PaymentDate.ToString("d")}"));
                     document.Add(new Paragraph($"Payment Method: {bookingResponse.Payment.PaymentMethod}"));

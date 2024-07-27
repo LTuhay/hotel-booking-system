@@ -12,5 +12,7 @@ namespace HotelBookingSystem.Application.DTO.CityDTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int Visitors { get; set; }
+        public int NumberOfHotels { get; set; }
+
     }
 }

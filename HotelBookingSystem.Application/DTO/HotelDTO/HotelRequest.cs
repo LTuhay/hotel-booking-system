@@ -6,6 +6,7 @@ namespace HotelBookingSystem.Application.DTO.HotelDTO
     {
         public string Name { get; set; }
         public string Owner { get; set; }
+        public string Address { get; set; }
         public string HotelType { get; set; }
         public int CityId { get; set; }
         public string Description { get; set; }

@@ -8,6 +8,7 @@ namespace HotelBookingSystem.Domain.Entities
         public int HotelId { get; set; }
         public string Name { get; set; }
         public string Owner {  get; set; }
+        public string Address { get; set; }
         public HotelType HotelType { get; set; }
         public int CityId { get; set; }
         public City City { get; set; }

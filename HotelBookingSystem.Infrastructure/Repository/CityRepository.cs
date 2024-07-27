@@ -18,6 +18,13 @@ namespace HotelBookingSystem.Infrastructure.Repository
                 .Take(limit)
                 .ToListAsync();
         }
+
+        public override async Task<City> GetByIdAsync(int id)
+        {
+            return await _context.Cities
+                .Include(c => c.Hotels)
+                .FirstOrDefaultAsync(c => c.CityId == id);
+        }
     }
 
 }

@@ -17,8 +17,10 @@ namespace HotelBookingSystem.Application.DTO.BookingDTO
         public string RoomType { get; set; }
         public int HotelId { get; set; }
         public string HotelName { get; set; }
+        public string HotelAddress { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
+        public string SpecialRequests { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentResponse? Payment { get; set; }
     }

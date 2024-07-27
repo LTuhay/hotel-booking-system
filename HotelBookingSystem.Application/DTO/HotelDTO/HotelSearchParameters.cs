@@ -7,8 +7,8 @@ namespace HotelBookingSystem.Application.DTO.HotelDTO
     public class HotelSearchParameters : ISearchParameters
     {
         public string? Query { get; set; }
-        public string CheckInDate { get; set; }
-        public string CheckOutDate { get; set; }
+        public string? CheckInDate { get; set; } = DateTime.Today.ToString("yyyy-MM-dd");
+        public string? CheckOutDate { get; set; } = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
         public int? Adults { get; set; } = 2;
         public int? Children { get; set; } = 0;
         public int? Rooms { get; set; } = 1;
