@@ -5,8 +5,8 @@ namespace HotelBookingSystem.Domain.Interfaces
     public interface ISearchParameters
     {
         string Query { get; set; }
-        string CheckInDate { get; set; }
-        string CheckOutDate { get; set; }
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; } 
         int? Adults { get; set; }
         int? Children { get; set; }
         int? Rooms { get; set; }

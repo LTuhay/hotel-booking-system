@@ -56,9 +56,7 @@ namespace HotelBookingSystem.Application.Services
         {
             var room = await _roomRepository.GetByIdAsync(roomId);
             if (room == null)
-                return null;
-            Console.WriteLine($"Room found: {room.RoomId}, ImagesUrl count: {room.ImagesUrl.Count}");
-
+                throw new KeyNotFoundException("Room not found");
             return _mapper.Map<RoomResponse>(room);
         }
 

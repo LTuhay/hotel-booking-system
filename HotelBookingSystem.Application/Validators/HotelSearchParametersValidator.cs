@@ -11,17 +11,12 @@ namespace HotelBookingSystem.Application.Validators
                 .Matches("^[a-zA-Z0-9 ]*$").WithMessage("Query contains invalid characters.");
 
             RuleFor(x => x.CheckInDate)
-                .Matches(@"^\d{4}-\d{2}-\d{2}$").WithMessage("Check-in date must be in the format YYYY-MM-DD.")
-                .When(x => !string.IsNullOrEmpty(x.CheckInDate));
+                .GreaterThan(DateTime.Today)
+                .WithMessage("Check-in date must be in the future.");
 
             RuleFor(x => x.CheckOutDate)
-                .Matches(@"^\d{4}-\d{2}-\d{2}$").WithMessage("Check-out date must be in the format YYYY-MM-DD.")
-                .When(x => !string.IsNullOrEmpty(x.CheckOutDate));
-
-            RuleFor(x => x)
-                .Must(x => DateTime.Parse(x.CheckOutDate) > DateTime.Parse(x.CheckInDate))
-                .WithMessage("Check-out date must be later than check-in date.")
-                .When(x => !string.IsNullOrEmpty(x.CheckInDate) && !string.IsNullOrEmpty(x.CheckOutDate));
+                .GreaterThan(x => x.CheckInDate)
+                .WithMessage("Check-out date must be later than check-in date.");
 
             RuleFor(x => x.Adults)
                 .GreaterThan(0).WithMessage("Number of adults must be at least 1.");

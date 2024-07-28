@@ -37,7 +37,7 @@ namespace HotelBookingSystem.Application.Services
             return _mapper.Map<UserResponse>(user);
         }
 
-        public async Task RegisterUserAsync(UserRequest request)
+        public async Task<UserResponse> RegisterUserAsync(UserRequest request)
         {
 
             if (await _userRepository.GetByEmailAsync(request.Email) != null)
@@ -50,6 +50,9 @@ namespace HotelBookingSystem.Application.Services
             user.PasswordHash = _passwordHasher.HashPassword(request.Password, salt);
 
             await _userRepository.AddAsync(user);
+
+            return _mapper.Map<UserResponse>(user);
+
         }
 
         public async Task<string> AuthenticateUserAsync(UserLoginRequest request)

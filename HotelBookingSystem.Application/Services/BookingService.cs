@@ -72,7 +72,7 @@ namespace HotelBookingSystem.Application.Services
 
             await _bookingRepository.AddAsync(booking);
 
-            var city = await _cityRepository.GetByIdAsync(booking.Hotel.CityId);
+            var city = await _cityRepository.GetByIdAsync(hotel.CityId);
             if (city != null)
             {
                 city.Visitors++;
@@ -175,10 +175,6 @@ namespace HotelBookingSystem.Application.Services
         {
             var booking = await _bookingRepository.GetByIdAsync(bookingId);
             if (booking == null) throw new KeyNotFoundException("Booking not found");
-
-            var room = await _roomRepository.GetByIdAsync(booking.RoomId); // estos para que son?
-            var hotel = await _hotelRepository.GetByIdAsync(booking.HotelId);
-            var user = await _userRepository.GetByIdAsync(booking.UserId);
 
             var bookingResponse = _mapper.Map<BookingResponse>(booking);
 

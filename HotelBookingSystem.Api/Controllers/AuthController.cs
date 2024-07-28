@@ -19,8 +19,8 @@ namespace HotelBookingSystem.Api.Controllers
         public async Task<IActionResult> Register(UserRequest request)
         {
 
-            await _userService.RegisterUserAsync(request);
-            return Ok(new { message = "User registered successfully" });
+            var createdUser = await _userService.RegisterUserAsync(request);
+            return Ok(new { createdUser });
 
         }
 

@@ -10,7 +10,7 @@ namespace HotelBookingSystem.Application.Validators
             RuleFor(x => x.FirstName).NotEmpty().WithMessage("FirstName is required");
             RuleFor(x => x.LastName).NotEmpty().WithMessage("LastName is required");
             RuleFor(x => x.Email).NotEmpty().EmailAddress().WithMessage("Valid Email is required");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("PasswordHash is required");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required");
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("PhoneNumber is required");
             RuleFor(x => x.DateOfBirth).LessThan(DateTime.Now).WithMessage("DateOfBirth must be in the past");
             RuleFor(x => x.Address).NotEmpty().WithMessage("Address is required");

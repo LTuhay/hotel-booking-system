@@ -89,17 +89,8 @@ namespace HotelBookingSystem.Application.Services
 
         private static void CheckRoomsAvailability(HotelSearchParameters searchParameters, IList<Hotel> hotels, List<HotelResponse> hotelResponses)
         {
-            DateTime? checkInDate = null;
-            DateTime? checkOutDate = null;
-            if (!string.IsNullOrEmpty(searchParameters.CheckInDate) && !string.IsNullOrEmpty(searchParameters.CheckOutDate))
-            {
-                if (DateTime.TryParse(searchParameters.CheckInDate, out DateTime parsedCheckInDate) &&
-                    DateTime.TryParse(searchParameters.CheckOutDate, out DateTime parsedCheckOutDate))
-                {
-                    checkInDate = parsedCheckInDate;
-                    checkOutDate = parsedCheckOutDate;
-                }
-            }
+            DateTime? checkInDate = searchParameters.CheckInDate != null ? searchParameters.CheckInDate : null;
+            DateTime? checkOutDate = searchParameters.CheckOutDate != null ? searchParameters.CheckOutDate : null;
 
             foreach (var hotelResponse in hotelResponses)
             {

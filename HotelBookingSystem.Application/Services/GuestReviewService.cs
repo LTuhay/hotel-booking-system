@@ -28,7 +28,10 @@ namespace HotelBookingSystem.Application.Services
 
         public async Task<GuestReviewResponse> AddReviewAsync(GuestReviewRequest reviewRequest)
         {
-            if (!await _hotelRepository.ExistsAsync(reviewRequest.HotelId))
+
+            var hotel = await _hotelRepository.GetByIdAsync(reviewRequest.HotelId);
+
+            if (hotel == null)
                 throw new KeyNotFoundException("Hotel not found");
 
             var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException("User not found"));
@@ -40,7 +43,7 @@ namespace HotelBookingSystem.Application.Services
 
             await _guestReviewRepository.AddAsync(review);
 
-            await UpdateHotelRating(reviewRequest.HotelId);
+            await UpdateHotelRating(reviewRequest.HotelId, hotel);
 
             return _mapper.Map<GuestReviewResponse>(review);
         }
@@ -50,18 +53,21 @@ namespace HotelBookingSystem.Application.Services
             var review = await _guestReviewRepository.GetByIdAsync(reviewId);
             if (review == null)
                 throw new KeyNotFoundException("Review not found");
+
+            var hotel = await _hotelRepository.GetByIdAsync(review.HotelId);
+            if (hotel == null)
+                throw new KeyNotFoundException("Hotel not found");
             await _guestReviewRepository.DeleteAsync(reviewId);
 
-            await UpdateHotelRating(review.HotelId);
+            await UpdateHotelRating(review.HotelId, hotel);
 
         }
 
-        private async Task UpdateHotelRating(int hotelId)
+        private async Task UpdateHotelRating(int hotelId, Hotel hotel)
         {
             var reviews = await _guestReviewRepository.GetReviewsByHotelIdAsync(hotelId);
             var averageRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0;
 
-            var hotel = await _hotelRepository.GetByIdAsync(hotelId);
             if (hotel != null)
             {
                 hotel.StarRating = (int)Math.Round(averageRating);

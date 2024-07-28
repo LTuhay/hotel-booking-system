@@ -27,13 +27,11 @@ namespace HotelBookingSystem.Infrastructure.Repository
                                           h.City.Name.Contains(searchParameters.Query));
             }
 
-            if (!string.IsNullOrEmpty(searchParameters.CheckInDate) && !string.IsNullOrEmpty(searchParameters.CheckOutDate))
+            if (searchParameters.CheckInDate != null && searchParameters.CheckOutDate != null)
             {
-                if (DateTime.TryParse(searchParameters.CheckInDate, out DateTime checkInDate) &&
-                    DateTime.TryParse(searchParameters.CheckOutDate, out DateTime checkOutDate))
-                {
-                    query = query.Where(h => h.Rooms.Any(r => r.Bookings.All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate)));
-                }
+
+                    query = query.Where(h => h.Rooms.Any(r => r.Bookings.All(b => b.CheckOutDate <= searchParameters.CheckInDate || b.CheckInDate >= searchParameters.CheckOutDate)));
+
             }
 
             if (searchParameters.Adults.HasValue)

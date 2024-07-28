@@ -5,7 +5,7 @@ namespace HotelBookingSystem.Application.Services
     public interface IUserService
     {
         Task<UserResponse> GetUserByIdAsync(int id);
-        Task RegisterUserAsync(UserRequest request);
+        Task<UserResponse> RegisterUserAsync(UserRequest request);
         Task<string> AuthenticateUserAsync(UserLoginRequest request);
     }
 }
