@@ -20,8 +20,19 @@ using Microsoft.Extensions.Configuration;
 using HotelBookingSystem.Infrastructure.PdfGenerator;
 using Serilog;
 using HotelBookingSystem.Api.Middlewares;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddSerilog());
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -109,15 +120,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddHttpContextAccessor();
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
 
-builder.Host.UseSerilog();
-var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddSerilog());
 
 var app = builder.Build();
 
@@ -127,7 +130,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseErrorHandlingMiddleware();
 app.UseAuthentication();

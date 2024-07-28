@@ -9,6 +9,8 @@ namespace HotelBookingSystem.Infrastructure.Data
     public class ApplicationDbContext : DbContext
     {
         private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<LoggingDbCommandInterceptor> _logger;
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory logger)
             : base(options)
@@ -30,7 +32,9 @@ namespace HotelBookingSystem.Infrastructure.Data
             {
                 optionsBuilder.UseLoggerFactory(_loggerFactory);
             }
-            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.AddInterceptors(new LoggingDbCommandInterceptor(_loggerFactory.CreateLogger<LoggingDbCommandInterceptor>()));
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
