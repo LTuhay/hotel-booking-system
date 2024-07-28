@@ -1,7 +1,7 @@
 ﻿using HotelBookingSystem.Application.DTO.BookingDTO;
 
 
-namespace HotelBookingSystem.Application.Services
+namespace HotelBookingSystem.Infrastructure.PdfGenerator
 {
     public interface IPdfService
     {

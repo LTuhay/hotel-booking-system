@@ -20,93 +20,31 @@ namespace HotelBookingSystem.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRoom([FromBody] RoomRequest request)
         {
-            try
-            {
-                var room = await _roomService.CreateRoomAsync(request);
-                return CreatedAtAction(nameof(GetRoomById), new { roomId = room.RoomId }, room);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
-            }
+            var room = await _roomService.CreateRoomAsync(request);
+            return CreatedAtAction(nameof(GetRoomById), new { roomId = room.RoomId }, room);
         }
 
         [HttpGet("{roomId}")]
         public async Task<IActionResult> GetRoomById(int roomId)
         {
-            try
-            {
-                var room = await _roomService.GetRoomByIdAsync(roomId);
-
-                return Ok(room);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
-            }
-;
+            var room = await _roomService.GetRoomByIdAsync(roomId);
+            return Ok(room);
         }
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{roomId}")]
         public async Task<IActionResult> UpdateRoom(int roomId, [FromBody] RoomRequest request)
         {
-            try
-            {
-                var room = await _roomService.UpdateRoomAsync(roomId, request);
-                return Ok(room);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
-            }
+            var room = await _roomService.UpdateRoomAsync(roomId, request);
+            return Ok(room);
         }
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{roomId}")]
         public async Task<IActionResult> DeleteRoom(int roomId)
         {
-            try
-            {
-                await _roomService.DeleteRoomAsync(roomId);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An unexpected error occurred. Please try again later." });
-            }
+            await _roomService.DeleteRoomAsync(roomId);
+            return NoContent();
         }
     }
 }

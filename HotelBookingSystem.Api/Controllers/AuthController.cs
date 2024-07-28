@@ -1,7 +1,6 @@
 ﻿using HotelBookingSystem.Application.DTO.UserDTO;
 using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HotelBookingSystem.Api.Controllers
 {
@@ -19,29 +18,19 @@ namespace HotelBookingSystem.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRequest request)
         {
-            try
-            {
-                await _userService.RegisterUserAsync(request);
-                return Ok(new { message = "User registered successfully" });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+
+            await _userService.RegisterUserAsync(request);
+            return Ok(new { message = "User registered successfully" });
+
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginRequest request)
         {
-            try
-            {
-                var token = await _userService.AuthenticateUserAsync(request);
-                return Ok(new { token });
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(new { message = ex.Message });
-            }
+
+            var token = await _userService.AuthenticateUserAsync(request);
+            return Ok(new { token });
+
         }
 
     }

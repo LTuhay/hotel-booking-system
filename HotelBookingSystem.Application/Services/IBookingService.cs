@@ -12,5 +12,6 @@ namespace HotelBookingSystem.Application.Services
         Task CancelBookingAsync(int bookingId);
         Task<BookingResponse> UpdateBookingAsync(int bookingId, BookingRequest bookingRequest);
         Task<BookingResponse> GetBookingDetailsAsync(int bookingId);
+        Task<byte[]> GetBookingPdfAsync(int bookingId);
     }
 }

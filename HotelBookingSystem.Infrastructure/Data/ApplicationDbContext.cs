@@ -1,15 +1,19 @@
 ﻿using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 
 namespace HotelBookingSystem.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly ILoggerFactory _loggerFactory;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory logger)
             : base(options)
         {
+            _loggerFactory = logger;
         }
 
         public DbSet<Booking> Bookings { get; set; }
@@ -20,6 +24,14 @@ namespace HotelBookingSystem.Infrastructure.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_loggerFactory != null)
+            {
+                optionsBuilder.UseLoggerFactory(_loggerFactory);
+            }
+            base.OnConfiguring(optionsBuilder);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

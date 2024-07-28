@@ -1,4 +1,5 @@
 ﻿using HotelBookingSystem.Application.DTO.BookingDTO;
+using HotelBookingSystem.Infrastructure.PdfGenerator;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -8,11 +9,6 @@ namespace HotelBookingSystem.Application.Services
 {
     public class PdfService : IPdfService
     {
-        private readonly IBookingService _bookingService;
-        public PdfService(IBookingService bookingService) 
-        {
-            _bookingService = bookingService;
-        }
         public byte[] GenerateBookingPdf(BookingResponse bookingResponse)
         {
 

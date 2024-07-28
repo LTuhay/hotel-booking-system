@@ -15,6 +15,11 @@ using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Application.DTO.HotelDTO;
 using System.Security.Claims;
+using HotelBookingSystem.Infrastructure.EmailSender;
+using Microsoft.Extensions.Configuration;
+using HotelBookingSystem.Infrastructure.PdfGenerator;
+using Serilog;
+using HotelBookingSystem.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,9 +103,21 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IGuestReviewService, GuestReviewService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddHttpContextAccessor();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddSerilog());
 
 var app = builder.Build();
 
@@ -112,9 +129,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseErrorHandlingMiddleware();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
