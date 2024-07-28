@@ -774,3 +774,361 @@ ORDER BY "t"."CityId"
 2024-07-28 17:02:52.202 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.CityController.GetCityById (HotelBookingSystem.Api)'
 2024-07-28 17:02:52.204 -03:00 [INF] HTTP GET /api/city/6 responded 200 in 43.3004 ms
 2024-07-28 17:02:52.205 -03:00 [INF] Request finished HTTP/1.1 GET https://localhost:7288/api/city/6 - 200 null application/json; charset=utf-8 47.5146ms
+2024-07-28 20:30:41.110 -03:00 [INF] User profile is available. Using 'C:\Users\loren\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-07-28 20:30:41.632 -03:00 [INF] Now listening on: https://localhost:7288
+2024-07-28 20:30:41.633 -03:00 [INF] Now listening on: http://localhost:5124
+2024-07-28 20:30:41.636 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-07-28 20:30:41.637 -03:00 [INF] Hosting environment: Development
+2024-07-28 20:30:41.637 -03:00 [INF] Content root path: C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Api
+2024-07-28 20:30:43.114 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/index.html - null null
+2024-07-28 20:30:43.670 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/index.html - 200 null text/html;charset=utf-8 571.3364ms
+2024-07-28 20:30:43.718 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - null null
+2024-07-28 20:30:43.727 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_vs/browserLink - null null
+2024-07-28 20:30:43.731 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - 200 13780 application/javascript; charset=utf-8 13.7103ms
+2024-07-28 20:30:43.844 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_vs/browserLink - 200 null text/javascript; charset=UTF-8 116.4598ms
+2024-07-28 20:30:43.984 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - null null
+2024-07-28 20:30:44.291 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 307.3085ms
+2024-07-28 20:31:56.766 -03:00 [INF] Request starting HTTP/1.1 GET https://localhost:7288/api/room/15 - application/json 281
+2024-07-28 20:31:57.001 -03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '25/7/2024 18:52:08', Current time (UTC): '28/7/2024 23:31:56'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2024-07-28 20:31:57.094 -03:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '25/7/2024 18:52:08', Current time (UTC): '28/7/2024 23:31:56'.
+2024-07-28 20:31:57.101 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.RoomController.GetRoomById (HotelBookingSystem.Api)'
+2024-07-28 20:31:57.169 -03:00 [INF] Route matched with {action = "GetRoomById", controller = "Room"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetRoomById(Int32) on controller HotelBookingSystem.Api.Controllers.RoomController (HotelBookingSystem.Api).
+2024-07-28 20:31:59.573 -03:00 [INF] Executing command: SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:31:59.620 -03:00 [INF] Executed DbCommand (36ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:31:59.780 -03:00 [INF] Executing OkObjectResult, writing value of type 'HotelBookingSystem.Application.DTO.RoomDTO.RoomResponse'.
+2024-07-28 20:31:59.817 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.RoomController.GetRoomById (HotelBookingSystem.Api) in 2636.3666ms
+2024-07-28 20:31:59.818 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.RoomController.GetRoomById (HotelBookingSystem.Api)'
+2024-07-28 20:31:59.821 -03:00 [INF] HTTP GET /api/room/15 responded 200 in 3045.5807 ms
+2024-07-28 20:31:59.832 -03:00 [INF] Request finished HTTP/1.1 GET https://localhost:7288/api/room/15 - 200 null application/json; charset=utf-8 3066.6967ms
+2024-07-28 20:32:09.799 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/auth/login - application/json 72
+2024-07-28 20:32:09.807 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-28 20:32:09.817 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelBookingSystem.Application.DTO.UserDTO.UserLoginRequest) on controller HotelBookingSystem.Api.Controllers.AuthController (HotelBookingSystem.Api).
+2024-07-28 20:32:09.936 -03:00 [INF] Executing command: SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-28 20:32:09.942 -03:00 [INF] Executed DbCommand (6ms) [Parameters=[@__email_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-28 20:32:09.988 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-07-28 20:32:09.994 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api) in 173.4247ms
+2024-07-28 20:32:09.996 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-28 20:32:09.997 -03:00 [INF] HTTP POST /api/auth/login responded 200 in 192.9925 ms
+2024-07-28 20:32:09.998 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/auth/login - 200 null application/json; charset=utf-8 199.5403ms
+2024-07-28 20:32:56.220 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/booking - application/json 182
+2024-07-28 20:32:56.276 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:32:56.284 -03:00 [INF] Route matched with {action = "CreateBooking", controller = "Booking"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBooking(HotelBookingSystem.Application.DTO.BookingDTO.BookingRequest) on controller HotelBookingSystem.Api.Controllers.BookingController (HotelBookingSystem.Api).
+2024-07-28 20:33:24.162 -03:00 [INF] Executing command: SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:33:24.193 -03:00 [INF] Executed DbCommand (31ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:33:24.232 -03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-07-28 20:33:24.238 -03:00 [INF] Executing command: SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:33:24.242 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:33:24.339 -03:00 [INF] Executing command: SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2024-07-28 20:33:24.340 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2024-07-28 20:33:24.574 -03:00 [INF] Executing command: INSERT INTO "Bookings" ("CheckInDate", "CheckOutDate", "HotelId", "RoomId", "SpecialRequests", "TotalPrice", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "BookingId";
+
+2024-07-28 20:33:24.579 -03:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (DbType = DateTime), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (Size = 23), @p5='?' (DbType = Decimal), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Bookings" ("CheckInDate", "CheckOutDate", "HotelId", "RoomId", "SpecialRequests", "TotalPrice", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "BookingId";
+2024-07-28 20:33:24.737 -03:00 [INF] Executing command: SELECT "t"."CityId", "t"."Country", "t"."CreatedAt", "t"."Name", "t"."PostOffice", "t"."ThumbnailUrl", "t"."UpdatedAt", "t"."Visitors", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+FROM (
+    SELECT "c"."CityId", "c"."Country", "c"."CreatedAt", "c"."Name", "c"."PostOffice", "c"."ThumbnailUrl", "c"."UpdatedAt", "c"."Visitors"
+    FROM "Cities" AS "c"
+    WHERE "c"."CityId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Hotels" AS "h" ON "t"."CityId" = "h"."CityId"
+ORDER BY "t"."CityId"
+2024-07-28 20:33:24.739 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."CityId", "t"."Country", "t"."CreatedAt", "t"."Name", "t"."PostOffice", "t"."ThumbnailUrl", "t"."UpdatedAt", "t"."Visitors", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+FROM (
+    SELECT "c"."CityId", "c"."Country", "c"."CreatedAt", "c"."Name", "c"."PostOffice", "c"."ThumbnailUrl", "c"."UpdatedAt", "c"."Visitors"
+    FROM "Cities" AS "c"
+    WHERE "c"."CityId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Hotels" AS "h" ON "t"."CityId" = "h"."CityId"
+ORDER BY "t"."CityId"
+2024-07-28 20:33:24.774 -03:00 [INF] Executing command: UPDATE "Cities" SET "Country" = @p0, "CreatedAt" = @p1, "Name" = @p2, "PostOffice" = @p3, "ThumbnailUrl" = @p4, "UpdatedAt" = @p5, "Visitors" = @p6
+WHERE "CityId" = @p7
+RETURNING 1;
+
+2024-07-28 20:33:24.776 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[@p7='?' (DbType = Int32), @p0='?' (Size = 3), @p1='?' (DbType = DateTime), @p2='?' (Size = 8), @p3='?' (Size = 5), @p4='?', @p5='?' (DbType = DateTime), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Cities" SET "Country" = @p0, "CreatedAt" = @p1, "Name" = @p2, "PostOffice" = @p3, "ThumbnailUrl" = @p4, "UpdatedAt" = @p5, "Visitors" = @p6
+WHERE "CityId" = @p7
+RETURNING 1;
+2024-07-28 20:33:29.831 -03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelBookingSystem.Application.DTO.BookingDTO.BookingResponse'.
+2024-07-28 20:33:29.916 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api) in 33630.1095ms
+2024-07-28 20:33:29.919 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:33:43.054 -03:00 [INF] Email sent successfully to john.doe@example.com
+2024-07-28 20:33:43.058 -03:00 [INF] HTTP POST /api/booking responded 201 in 46807.1513 ms
+2024-07-28 20:33:43.061 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/booking - 201 null application/json; charset=utf-8 46846.0122ms
+2024-07-28 20:34:27.891 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/auth/login - application/json 74
+2024-07-28 20:34:27.900 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-28 20:34:27.901 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelBookingSystem.Application.DTO.UserDTO.UserLoginRequest) on controller HotelBookingSystem.Api.Controllers.AuthController (HotelBookingSystem.Api).
+2024-07-28 20:34:27.907 -03:00 [INF] Executing command: SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-28 20:34:27.909 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__email_0='?' (Size = 22)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-28 20:34:27.912 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-07-28 20:34:27.914 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api) in 9.774ms
+2024-07-28 20:34:27.915 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-28 20:34:27.916 -03:00 [INF] HTTP POST /api/auth/login responded 200 in 16.1293 ms
+2024-07-28 20:34:27.918 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/auth/login - 200 null application/json; charset=utf-8 28.032ms
+2024-07-28 20:34:44.639 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/booking - application/json 182
+2024-07-28 20:34:44.643 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:34:44.644 -03:00 [INF] Route matched with {action = "CreateBooking", controller = "Booking"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBooking(HotelBookingSystem.Application.DTO.BookingDTO.BookingRequest) on controller HotelBookingSystem.Api.Controllers.BookingController (HotelBookingSystem.Api).
+2024-07-28 20:34:53.419 -03:00 [INF] Executing command: SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:34:53.425 -03:00 [INF] Executed DbCommand (6ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:34:53.429 -03:00 [INF] Executing command: SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:34:53.431 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:34:55.453 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api) in 10806.6849ms
+2024-07-28 20:34:55.460 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:35:00.453 -03:00 [WRN] Invalid operation.
+System.InvalidOperationException: Room is already booked for the specified dates
+   at HotelBookingSystem.Application.Services.BookingService.CreateBookingAsync(BookingRequest bookingRequest) in C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Application\Services\BookingService.cs:line 63
+   at HotelBookingSystem.Api.Controllers.BookingController.CreateBooking(BookingRequest bookingRequest) in C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Api\Controllers\BookingController.cs:line 29
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at HotelBookingSystem.Api.Middlewares.ErrorHandlingMiddleware.InvokeAsync(HttpContext httpContext) in C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Api\Middlewares\ErrorHandlingMiddleware.cs:line 20
+2024-07-28 20:35:08.091 -03:00 [INF] HTTP POST /api/booking responded 400 in 23449.2520 ms
+2024-07-28 20:35:08.093 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/booking - 400 null application/json 23453.7117ms
+2024-07-28 20:35:36.127 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/booking - application/json 182
+2024-07-28 20:35:36.133 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:35:36.134 -03:00 [INF] Route matched with {action = "CreateBooking", controller = "Booking"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBooking(HotelBookingSystem.Application.DTO.BookingDTO.BookingRequest) on controller HotelBookingSystem.Api.Controllers.BookingController (HotelBookingSystem.Api).
+2024-07-28 20:35:36.158 -03:00 [INF] Executing command: SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:35:36.161 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."RoomId", "t"."AdultCapacity", "t"."ChildCapacity", "t"."CreatedAt", "t"."DiscountedPrice", "t"."FeaturedDeal", "t"."HotelId", "t"."ImagesUrl", "t"."PricePerNight", "t"."RoomType", "t"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+FROM (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+    FROM "Rooms" AS "r"
+    WHERE "r"."RoomId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Bookings" AS "b" ON "t"."RoomId" = "b"."RoomId"
+ORDER BY "t"."RoomId"
+2024-07-28 20:35:36.166 -03:00 [INF] Executing command: SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:35:36.170 -03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."HotelId", "t"."Address", "t"."Amenities", "t"."CityId", "t"."CreatedAt", "t"."Description", "t"."HotelType", "t"."Name", "t"."Owner", "t"."StarRating", "t"."ThumbnailUrl", "t"."UpdatedAt", "t0"."RoomId", "t0"."AdultCapacity", "t0"."ChildCapacity", "t0"."CreatedAt", "t0"."DiscountedPrice", "t0"."FeaturedDeal", "t0"."HotelId", "t0"."ImagesUrl", "t0"."PricePerNight", "t0"."RoomType", "t0"."UpdatedAt", "t0"."BookingId", "t0"."CheckInDate", "t0"."CheckOutDate", "t0"."HotelId0", "t0"."RoomId0", "t0"."SpecialRequests", "t0"."TotalPrice", "t0"."UserId", "g"."GuestReviewId", "g"."Comment", "g"."CreatedDate", "g"."HotelId", "g"."Rating", "g"."UserId"
+FROM (
+    SELECT "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+    FROM "Hotels" AS "h"
+    WHERE "h"."HotelId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt", "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId" AS "HotelId0", "b"."RoomId" AS "RoomId0", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId"
+    FROM "Rooms" AS "r"
+    LEFT JOIN "Bookings" AS "b" ON "r"."RoomId" = "b"."RoomId"
+) AS "t0" ON "t"."HotelId" = "t0"."HotelId"
+LEFT JOIN "GuestReviews" AS "g" ON "t"."HotelId" = "g"."HotelId"
+ORDER BY "t"."HotelId", "t0"."RoomId", "t0"."BookingId"
+2024-07-28 20:35:36.178 -03:00 [INF] Executing command: SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2024-07-28 20:35:36.179 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2024-07-28 20:35:36.184 -03:00 [INF] Executing command: INSERT INTO "Bookings" ("CheckInDate", "CheckOutDate", "HotelId", "RoomId", "SpecialRequests", "TotalPrice", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "BookingId";
+
+2024-07-28 20:35:36.185 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (DbType = DateTime), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (Size = 23), @p5='?' (DbType = Decimal), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Bookings" ("CheckInDate", "CheckOutDate", "HotelId", "RoomId", "SpecialRequests", "TotalPrice", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "BookingId";
+2024-07-28 20:35:36.196 -03:00 [INF] Executing command: SELECT "t"."CityId", "t"."Country", "t"."CreatedAt", "t"."Name", "t"."PostOffice", "t"."ThumbnailUrl", "t"."UpdatedAt", "t"."Visitors", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+FROM (
+    SELECT "c"."CityId", "c"."Country", "c"."CreatedAt", "c"."Name", "c"."PostOffice", "c"."ThumbnailUrl", "c"."UpdatedAt", "c"."Visitors"
+    FROM "Cities" AS "c"
+    WHERE "c"."CityId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Hotels" AS "h" ON "t"."CityId" = "h"."CityId"
+ORDER BY "t"."CityId"
+2024-07-28 20:35:36.198 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."CityId", "t"."Country", "t"."CreatedAt", "t"."Name", "t"."PostOffice", "t"."ThumbnailUrl", "t"."UpdatedAt", "t"."Visitors", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt"
+FROM (
+    SELECT "c"."CityId", "c"."Country", "c"."CreatedAt", "c"."Name", "c"."PostOffice", "c"."ThumbnailUrl", "c"."UpdatedAt", "c"."Visitors"
+    FROM "Cities" AS "c"
+    WHERE "c"."CityId" = @__id_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN "Hotels" AS "h" ON "t"."CityId" = "h"."CityId"
+ORDER BY "t"."CityId"
+2024-07-28 20:35:36.201 -03:00 [INF] Executing command: UPDATE "Cities" SET "Country" = @p0, "CreatedAt" = @p1, "Name" = @p2, "PostOffice" = @p3, "ThumbnailUrl" = @p4, "UpdatedAt" = @p5, "Visitors" = @p6
+WHERE "CityId" = @p7
+RETURNING 1;
+
+2024-07-28 20:35:36.202 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p7='?' (DbType = Int32), @p0='?' (Size = 3), @p1='?' (DbType = DateTime), @p2='?' (Size = 8), @p3='?' (Size = 5), @p4='?', @p5='?' (DbType = DateTime), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Cities" SET "Country" = @p0, "CreatedAt" = @p1, "Name" = @p2, "PostOffice" = @p3, "ThumbnailUrl" = @p4, "UpdatedAt" = @p5, "Visitors" = @p6
+WHERE "CityId" = @p7
+RETURNING 1;
+2024-07-28 20:35:36.208 -03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelBookingSystem.Application.DTO.BookingDTO.BookingResponse'.
+2024-07-28 20:35:36.219 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api) in 82.1625ms
+2024-07-28 20:35:36.224 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.BookingController.CreateBooking (HotelBookingSystem.Api)'
+2024-07-28 20:35:36.225 -03:00 [INF] HTTP POST /api/booking responded 201 in 94.4291 ms
+2024-07-28 20:35:36.227 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/booking - 201 null application/json; charset=utf-8 128.1852ms
+2024-07-28 20:35:36.258 -03:00 [INF] Email sent successfully to lorena.tuhay@gmail.com

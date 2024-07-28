@@ -1,37 +1,43 @@
-﻿using Microsoft.Extensions.Options;
+﻿
 using System.Net.Mail;
-using System.Net;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBookingSystem.Infrastructure.EmailSender
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpSettings _smtpSettings;
+        private readonly SmtpClient _smtpClient;
+        private readonly string _fromEmail;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<SmtpSettings> smtpSettings)
+        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
         {
-            _smtpSettings = smtpSettings.Value;
+            _smtpClient = new SmtpClient
+            {
+                Host = configuration["SmtpSettings:Server"],
+                Port = int.Parse(configuration["SmtpSettings:Port"]),
+                EnableSsl = false 
+            };
+
+            _fromEmail = configuration["SmtpSettings:SenderEmail"];
+            _logger = logger;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public async Task SendEmailAsync(string to, string subject, string body)
         {
-            var client = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port)
+            try
             {
-                Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
-                EnableSsl = true
-            };
-
-            var mailMessage = new MailMessage
+                var mailMessage = new MailMessage(_fromEmail, to, subject, body) { IsBodyHtml = true };
+                await _smtpClient.SendMailAsync(mailMessage);
+                _logger.LogInformation("Email sent successfully to {Email}", to);
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress(_smtpSettings.SenderEmail, _smtpSettings.SenderName),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
-
-            mailMessage.To.Add(toEmail);
-
-            await client.SendMailAsync(mailMessage);
+                _logger.LogError(ex, "Failed to send email to {Email}", to);
+                throw;
+            }
         }
     }
+
 }
