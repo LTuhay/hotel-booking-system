@@ -1,141 +1,28 @@
-using FluentValidation.AspNetCore;
-using HotelBookingSystem.Application.MappingProfiles;
-using HotelBookingSystem.Application.Validators;
-using HotelBookingSystem.Infrastructure.Data;
-using HotelBookingSystem.Infrastructure.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using HotelBookingSystem.Application.JWT;
-using HotelBookingSystem.Domain.Enums;
-using HotelBookingSystem.Domain.Interfaces.Repository;
-using HotelBookingSystem.Application.Services;
-using HotelBookingSystem.Domain.Interfaces;
-using HotelBookingSystem.Application.DTO.HotelDTO;
-using System.Security.Claims;
-using HotelBookingSystem.Infrastructure.EmailSender;
-using Serilog;
+using HotelBookingSystem.Api.Extensions;
 using HotelBookingSystem.Api.Middlewares;
-using Serilog.Events;
-using HotelBookingSystem.Application.PasswordHasher;
-using HotelBookingSystem.Application.DTO.BookingDTO;
-using HotelBookingSystem.Infrastructure.PdfGen;
-using HotelBookingSystem.Domain.Entities;
-using HotelBookingSystem.Application.Utilities;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-
-builder.Host.UseSerilog();
+builder.ConfigureLogging();
 var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddSerilog());
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddControllers()
-    .AddFluentValidation(fv =>
-    {
-        fv.RegisterValidatorsFromAssemblyContaining<BookingRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<CityRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<GuestReviewRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<HotelRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<PaymentRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<RoomRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<HotelSearchParametersValidator>();
-    });
-
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-    });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole(UserRole.Admin.ToString()));
-    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
-    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole(UserRole.Customer.ToString()));
-    options.AddPolicy("AdminOrCustomer", policy =>
-    {
-        policy.RequireAssertion(context =>
-            context.User.IsInRole(UserRole.Admin.ToString()) ||
-            context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier));
-    });
-});
-
-
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddProfile<BookingProfile>();
-    cfg.AddProfile<CityProfile>();
-    cfg.AddProfile<GuestReviewProfile>();
-    cfg.AddProfile<HotelProfile>();
-    cfg.AddProfile<PaymentProfile>();
-    cfg.AddProfile<RoomProfile>();
-    cfg.AddProfile<UserProfile>();
-}, typeof(Program).Assembly);
-
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-builder.Services.AddScoped<ICityRepository, CityRepository>();
-builder.Services.AddScoped<IGuestReviewRepository, GuestReviewRepository>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICityService, CityService>();
-builder.Services.AddScoped<IHotelService, HotelService>();
-builder.Services.AddScoped<IRoomService, RoomService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IGuestReviewService, GuestReviewService>();
-builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<IEmailService, EmailService>();
-builder.Services.AddScoped(typeof(IPdfGenerator<>), typeof(PdfGenerator<>));
-builder.Services.AddScoped<IPdfGenerator<Booking>, BookingPdfGenerator>();
-builder.Services.AddScoped<IBookingPdfGenerator, BookingPdfGenerator>();
-builder.Services.AddScoped<IBookingEmailGenerator, BookingEmailGenerator>();
-
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddHttpContextAccessor();
-
-
+builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureFluentValidation();
+builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+builder.Services.ConfigureAuthorizationPolicies();
+builder.Services.ConfigureAutoMapper();
+builder.Services.RegisterServices(builder.Configuration);
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseErrorHandlingMiddleware();
