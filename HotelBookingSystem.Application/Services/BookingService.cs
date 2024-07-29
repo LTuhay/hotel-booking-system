@@ -52,7 +52,7 @@ namespace HotelBookingSystem.Application.Services
             var room = await _roomRepository.GetByIdAsync(bookingRequest.RoomId);
             if (room == null) throw new KeyNotFoundException("Room not found");
 
-            var hotel = await _hotelRepository.GetByIdAsync(bookingRequest.HotelId);
+            var hotel = await _hotelRepository.GetByIdAsync(room.HotelId);
             if (hotel == null) throw new KeyNotFoundException("Hotel not found");
 
 
@@ -65,6 +65,7 @@ namespace HotelBookingSystem.Application.Services
             decimal totalPrice = CalculateTotalPrice(room, checkInDate, checkOutDate);
 
             var booking = _mapper.Map<Booking>(bookingRequest);
+            booking.HotelId = room.HotelId;
 
             booking.TotalPrice = totalPrice;
             booking.UserId = userId;
@@ -153,7 +154,7 @@ namespace HotelBookingSystem.Application.Services
             var room = await _roomRepository.GetByIdAsync(bookingRequest.RoomId);
             if (room == null) throw new KeyNotFoundException("Room not found");
 
-            var hotel = await _hotelRepository.GetByIdAsync(bookingRequest.HotelId);
+            var hotel = await _hotelRepository.GetByIdAsync(room.HotelId);
             if (hotel == null) throw new KeyNotFoundException("Hotel not found");
 
 

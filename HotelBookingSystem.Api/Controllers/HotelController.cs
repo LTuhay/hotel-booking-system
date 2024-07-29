@@ -100,7 +100,7 @@ namespace HotelBookingSystem.Api.Controllers
 
 
 
-        [Authorize(Policy = "AdminOrCustomer")]
+        [Authorize(Policy = "CustomerPolicy")]
         [HttpGet("recent-hotels")]
         public async Task<IActionResult> GetRecentHotels([FromQuery] int limit = 5)
         {

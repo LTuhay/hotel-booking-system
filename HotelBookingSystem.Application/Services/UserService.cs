@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using HotelBookingSystem.Application.DTO.UserDTO;
+using HotelBookingSystem.Application.PasswordHasher;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces.Repository;
-using HotelBookingSystem.Infrastructure.PasswordHasher;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 
 namespace HotelBookingSystem.Application.Services
@@ -18,13 +14,15 @@ namespace HotelBookingSystem.Application.Services
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher, IConfiguration configuration, ITokenService tokenService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         public async Task<UserResponse> GetUserByIdAsync(int id)
@@ -63,28 +61,7 @@ namespace HotelBookingSystem.Application.Services
                 throw new UnauthorizedAccessException("Invalid credentials");
             }
 
-            return GenerateToken(user);
-        }
-
-        private string GenerateToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return _tokenService.GenerateToken(user);
         }
 
     }

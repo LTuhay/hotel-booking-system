@@ -2,11 +2,11 @@
 using FluentAssertions;
 using HotelBookingSystem.Application.DTO.UserDTO;
 using HotelBookingSystem.Application.MappingProfiles;
+using HotelBookingSystem.Application.PasswordHasher;
 using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Enums;
 using HotelBookingSystem.Domain.Interfaces.Repository;
-using HotelBookingSystem.Infrastructure.PasswordHasher;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -18,6 +18,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<IPasswordHasher> _passwordHasherMock;
         private readonly Mock<IConfiguration> _configurationMock;
+        private readonly Mock<ITokenService> _tokenServiceMock;
         private readonly UserService _userService;
 
         public UserServiceTests()
@@ -32,12 +33,14 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _userRepositoryMock = new Mock<IUserRepository>();
             _passwordHasherMock = new Mock<IPasswordHasher>();
             _configurationMock = new Mock<IConfiguration>();
+            _tokenServiceMock = new Mock<ITokenService>();
 
             _userService = new UserService(
                 _userRepositoryMock.Object,
                 _mapper,
                 _passwordHasherMock.Object,
-                _configurationMock.Object
+                _configurationMock.Object,
+                _tokenServiceMock.Object
             );
         }
 
@@ -161,6 +164,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _configurationMock.Setup(x => x["Jwt:Key"]).Returns("supersecretkey12345supersecretkey12345");
             _configurationMock.Setup(x => x["Jwt:Issuer"]).Returns("issuer");
             _configurationMock.Setup(x => x["Jwt:Audience"]).Returns("audience");
+            _tokenServiceMock.Setup(x => x.GenerateToken(user)).Returns("mockedToken");
 
             var token = await _userService.AuthenticateUserAsync(request);
 

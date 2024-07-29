@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HotelBookingSystem.Application.JWT;
 using HotelBookingSystem.Domain.Enums;
-using HotelBookingSystem.Infrastructure.PasswordHasher;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Interfaces;
@@ -21,6 +20,7 @@ using HotelBookingSystem.Infrastructure.PdfGenerator;
 using Serilog;
 using HotelBookingSystem.Api.Middlewares;
 using Serilog.Events;
+using HotelBookingSystem.Application.PasswordHasher;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -114,6 +114,7 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IGuestReviewService, GuestReviewService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
 

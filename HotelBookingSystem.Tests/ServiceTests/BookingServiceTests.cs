@@ -66,7 +66,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier))
                 .Returns((Claim)null);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
 
             await _bookingService.Invoking(service => service.CreateBookingAsync(request))
                 .Should().ThrowAsync<UnauthorizedAccessException>();
@@ -80,7 +80,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
 
             _roomRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Room)null);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
 
             await _bookingService.Invoking(service => service.CreateBookingAsync(request))
                 .Should().ThrowAsync<KeyNotFoundException>();
@@ -95,7 +95,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _roomRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(new Room { Bookings = new List<Booking>() });
             _hotelRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Hotel)null);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
 
             await _bookingService.Invoking(service => service.CreateBookingAsync(request))
                 .Should().ThrowAsync<KeyNotFoundException>();
@@ -113,7 +113,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _roomRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(room);
             _hotelRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(hotel);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(2) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(2) };
 
             await _bookingService.Invoking(service => service.CreateBookingAsync(request))
                 .Should().ThrowAsync<InvalidOperationException>();
@@ -160,7 +160,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 .ReturnsAsync(city);
             _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
 
             var result = await _bookingService.CreateBookingAsync(request);
 
@@ -182,7 +182,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
         {
             _bookingRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Booking)null);
 
-            var request = new BookingRequest { RoomId = 1, HotelId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
 
             await _bookingService.Invoking(service => service.UpdateBookingAsync(1, request))
                 .Should().ThrowAsync<KeyNotFoundException>();
