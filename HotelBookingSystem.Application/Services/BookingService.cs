@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using HotelBookingSystem.Application.DTO.BookingDTO;
+using HotelBookingSystem.Application.Utilities;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.EmailSender;
 using HotelBookingSystem.Infrastructure.PdfGen;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using System.Text;
 
 
 namespace HotelBookingSystem.Application.Services
@@ -22,6 +22,7 @@ namespace HotelBookingSystem.Application.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEmailService _emailService;
         private readonly IBookingPdfGenerator _bookingPdfGenerator;
+        private readonly IBookingEmailGenerator _bookingEmailGenerator;
 
         public BookingService(
             IBookingRepository bookingRepository,
@@ -32,7 +33,8 @@ namespace HotelBookingSystem.Application.Services
             IHttpContextAccessor httpContextAccessor,
             ICityRepository cityRepository,
             IEmailService emailService,
-            IBookingPdfGenerator bookingPdfGenerator
+            IBookingPdfGenerator bookingPdfGenerator,
+            IBookingEmailGenerator bookingEmailGenerator
             )
         {
             _bookingRepository = bookingRepository;
@@ -44,6 +46,7 @@ namespace HotelBookingSystem.Application.Services
             _cityRepository = cityRepository;
             _emailService = emailService;
             _bookingPdfGenerator = bookingPdfGenerator;
+            _bookingEmailGenerator = bookingEmailGenerator;
         }
 
         public async Task<BookingResponse> CreateBookingAsync(BookingRequest bookingRequest)
@@ -91,7 +94,7 @@ namespace HotelBookingSystem.Application.Services
         private void SendEmailWithBookingDetails(Booking booking, BookingResponse bookingResponse)
         {
             string emailSubject = "Your booking details";
-            string emailBody = GenerateBookingEmailBody(bookingResponse);
+            string emailBody = _bookingEmailGenerator.GenerateBookingEmailBody(bookingResponse);
             _emailService.SendEmailAsync(booking.User.Email, emailSubject, emailBody);
         }
 
@@ -103,34 +106,6 @@ namespace HotelBookingSystem.Application.Services
                 : room.PricePerNight;
             var totalPrice = totalNights * pricePerNight;
             return totalPrice;
-        }
-
-        private string GenerateBookingEmailBody(BookingResponse bookingResponse)
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine("<h1>Booking Details</h1>");
-            sb.AppendLine($"<p><strong>Booking number:</strong> {bookingResponse.BookingId}</p>");
-            sb.AppendLine($"<p><strong>User Name:</strong> {bookingResponse.UserFirstName} {bookingResponse.UserLastName}</p>");
-            sb.AppendLine($"<p><strong>Hotel Name:</strong> {bookingResponse.HotelName}</p>");
-            sb.AppendLine($"<p><strong>Hotel Address:</strong> {bookingResponse.HotelAddress}</p>");
-            sb.AppendLine($"<p><strong>Room Type:</strong> {bookingResponse.RoomType}</p>");
-            sb.AppendLine($"<p><strong>Special Requests:</strong> {bookingResponse.SpecialRequests}</p>");
-            sb.AppendLine($"<p><strong>Check-in Date:</strong> {bookingResponse.CheckInDate.ToString("d")}</p>");
-            sb.AppendLine($"<p><strong>Check-out Date:</strong> {bookingResponse.CheckOutDate.ToString("d")}</p>");
-            sb.AppendLine($"<p><strong>Total Price:</strong> ${bookingResponse.TotalPrice}</p>");
-
-            if (bookingResponse.Payment != null)
-            {
-                sb.AppendLine("<h2>Payment Details</h2>");
-                sb.AppendLine($"<p><strong>Payment number:</strong> {bookingResponse.Payment.PaymentId}</p>");
-                sb.AppendLine($"<p><strong>Amount:</strong> ${bookingResponse.Payment.Amount}</p>");
-                sb.AppendLine($"<p><strong>Payment Date:</strong> {bookingResponse.Payment.PaymentDate.ToString("d")}</p>");
-                sb.AppendLine($"<p><strong>Payment Method:</strong> {bookingResponse.Payment.PaymentMethod}</p>");
-                sb.AppendLine($"<p><strong>Payment Status:</strong> {bookingResponse.Payment.Status}</p>");
-            }
-
-            return sb.ToString();
         }
 
         public async Task CancelBookingAsync(int bookingId)

@@ -22,6 +22,7 @@ using HotelBookingSystem.Application.PasswordHasher;
 using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Infrastructure.PdfGen;
 using HotelBookingSystem.Domain.Entities;
+using HotelBookingSystem.Application.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -120,6 +121,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped(typeof(IPdfGenerator<>), typeof(PdfGenerator<>));
 builder.Services.AddScoped<IPdfGenerator<Booking>, BookingPdfGenerator>();
 builder.Services.AddScoped<IBookingPdfGenerator, BookingPdfGenerator>();
+builder.Services.AddScoped<IBookingEmailGenerator, BookingEmailGenerator>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddHttpContextAccessor();

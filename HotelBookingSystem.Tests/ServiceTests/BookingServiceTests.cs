@@ -4,6 +4,7 @@ using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Application.DTO.PaymentDTO;
 using HotelBookingSystem.Application.MappingProfiles;
 using HotelBookingSystem.Application.Services;
+using HotelBookingSystem.Application.Utilities;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.EmailSender;
@@ -26,6 +27,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
         private readonly Mock<ICityRepository> _cityRepositoryMock;
         private readonly Mock<IEmailService> _emailServiceMock;
         private readonly Mock<IBookingPdfGenerator> _bookingPdfGenerator;
+        private readonly Mock<IBookingEmailGenerator> _bookingEmailGeneratorMock;
 
         public BookingServiceTests()
         {
@@ -37,6 +39,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _cityRepositoryMock = new Mock<ICityRepository>();
             _emailServiceMock = new Mock<IEmailService>();
             _bookingPdfGenerator = new Mock<IBookingPdfGenerator>();
+            _bookingEmailGeneratorMock = new Mock<IBookingEmailGenerator>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -56,7 +59,8 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 _httpContextAccessorMock.Object,
                 _cityRepositoryMock.Object,
                 _emailServiceMock.Object,
-                _bookingPdfGenerator.Object
+                _bookingPdfGenerator.Object,
+                _bookingEmailGeneratorMock.Object
             );
         }
 
