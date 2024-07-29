@@ -1,7 +1,6 @@
 ﻿
 using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Application.Services;
-using HotelBookingSystem.Infrastructure.PdfGenerator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +13,10 @@ namespace HotelBookingSystem.Api.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
-        private readonly IPdfService _pdfService;
 
-        public BookingController(IBookingService bookingService, IPdfService pdfService)
+        public BookingController(IBookingService bookingService)
         {
             _bookingService = bookingService;
-            _pdfService = pdfService;
         }
 
         [HttpPost]

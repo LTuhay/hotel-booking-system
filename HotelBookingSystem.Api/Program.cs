@@ -15,12 +15,13 @@ using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Application.DTO.HotelDTO;
 using System.Security.Claims;
 using HotelBookingSystem.Infrastructure.EmailSender;
-using Microsoft.Extensions.Configuration;
-using HotelBookingSystem.Infrastructure.PdfGenerator;
 using Serilog;
 using HotelBookingSystem.Api.Middlewares;
 using Serilog.Events;
 using HotelBookingSystem.Application.PasswordHasher;
+using HotelBookingSystem.Application.DTO.BookingDTO;
+using HotelBookingSystem.Infrastructure.PdfGen;
+using HotelBookingSystem.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,12 +112,14 @@ builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IGuestReviewService, GuestReviewService>();
 builder.Services.AddScoped<ISearchParameters, HotelSearchParameters>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped(typeof(IPdfGenerator<>), typeof(PdfGenerator<>));
+builder.Services.AddScoped<IPdfGenerator<Booking>, BookingPdfGenerator>();
+builder.Services.AddScoped<IBookingPdfGenerator, BookingPdfGenerator>();
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddHttpContextAccessor();

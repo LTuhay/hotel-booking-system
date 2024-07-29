@@ -3,7 +3,7 @@ using HotelBookingSystem.Application.DTO.BookingDTO;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.EmailSender;
-using HotelBookingSystem.Infrastructure.PdfGenerator;
+using HotelBookingSystem.Infrastructure.PdfGen;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Text;
@@ -21,7 +21,7 @@ namespace HotelBookingSystem.Application.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEmailService _emailService;
-        private readonly IPdfService _pdfService;
+        private readonly IBookingPdfGenerator _bookingPdfGenerator;
 
         public BookingService(
             IBookingRepository bookingRepository,
@@ -32,7 +32,8 @@ namespace HotelBookingSystem.Application.Services
             IHttpContextAccessor httpContextAccessor,
             ICityRepository cityRepository,
             IEmailService emailService,
-            IPdfService pdfService)
+            IBookingPdfGenerator bookingPdfGenerator
+            )
         {
             _bookingRepository = bookingRepository;
             _roomRepository = roomRepository;
@@ -42,7 +43,7 @@ namespace HotelBookingSystem.Application.Services
             _httpContextAccessor = httpContextAccessor;
             _cityRepository = cityRepository;
             _emailService = emailService;
-            _pdfService = pdfService;
+            _bookingPdfGenerator = bookingPdfGenerator;
         }
 
         public async Task<BookingResponse> CreateBookingAsync(BookingRequest bookingRequest)
@@ -187,11 +188,7 @@ namespace HotelBookingSystem.Application.Services
             var booking = await _bookingRepository.GetByIdAsync(bookingId);
             if (booking == null) throw new KeyNotFoundException("Booking not found");
 
-            var bookingResponse = _mapper.Map<BookingResponse>(booking);
-
-            byte[] bookingPdf = _pdfService.GenerateBookingPdf(bookingResponse);
-
-            return bookingPdf;
+            return await _bookingPdfGenerator.GeneratePdfAsync(booking);
         }
 
 

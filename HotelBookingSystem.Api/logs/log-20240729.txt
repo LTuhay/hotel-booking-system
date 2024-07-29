@@ -1,0 +1,104 @@
+2024-07-29 14:10:48.859 -03:00 [INF] User profile is available. Using 'C:\Users\loren\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-07-29 14:10:49.815 -03:00 [INF] Now listening on: https://localhost:7288
+2024-07-29 14:10:49.819 -03:00 [INF] Now listening on: http://localhost:5124
+2024-07-29 14:10:49.825 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-07-29 14:10:49.828 -03:00 [INF] Hosting environment: Development
+2024-07-29 14:10:49.830 -03:00 [INF] Content root path: C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Api
+2024-07-29 14:10:51.727 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/index.html - null null
+2024-07-29 14:10:52.368 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/index.html - 200 null text/html;charset=utf-8 655.544ms
+2024-07-29 14:10:52.466 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - null null
+2024-07-29 14:10:52.481 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - 200 13780 application/javascript; charset=utf-8 15.6491ms
+2024-07-29 14:10:52.489 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_vs/browserLink - null null
+2024-07-29 14:10:52.641 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_vs/browserLink - 200 null text/javascript; charset=UTF-8 151.4562ms
+2024-07-29 14:10:52.784 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - null null
+2024-07-29 14:10:52.828 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/favicon-32x32.png - null null
+2024-07-29 14:10:52.844 -03:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2024-07-29 14:10:52.846 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/favicon-32x32.png - 200 628 image/png 18.1661ms
+2024-07-29 14:10:52.990 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 205.9326ms
+2024-07-29 14:11:37.370 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7288/api/auth/login - application/json 72
+2024-07-29 14:11:37.496 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-29 14:11:37.552 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelBookingSystem.Application.DTO.UserDTO.UserLoginRequest) on controller HotelBookingSystem.Api.Controllers.AuthController (HotelBookingSystem.Api).
+2024-07-29 14:11:40.458 -03:00 [INF] Executing command: SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-29 14:11:40.497 -03:00 [INF] Executed DbCommand (34ms) [Parameters=[@__email_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Users" AS "u"
+WHERE "u"."Email" = @__email_0
+LIMIT 1
+2024-07-29 14:11:40.667 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2024-07-29 14:11:40.688 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api) in 3127.1042ms
+2024-07-29 14:11:40.690 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.AuthController.Login (HotelBookingSystem.Api)'
+2024-07-29 14:11:40.695 -03:00 [INF] HTTP POST /api/auth/login responded 200 in 3317.0869 ms
+2024-07-29 14:11:40.709 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7288/api/auth/login - 200 null application/json; charset=utf-8 3339.1303ms
+2024-07-29 14:12:23.378 -03:00 [INF] Request starting HTTP/1.1 GET https://localhost:7288/api/booking/6/pdf - null null
+2024-07-29 14:12:23.457 -03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '28/7/2024 16:52:14', Current time (UTC): '29/7/2024 17:12:23'.
+   at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2024-07-29 14:12:23.520 -03:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '28/7/2024 16:52:14', Current time (UTC): '29/7/2024 17:12:23'.
+2024-07-29 14:12:23.527 -03:00 [INF] Authorization failed. These requirements were not met:
+Handler assertion should evaluate to true.
+2024-07-29 14:12:23.533 -03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2024-07-29 14:12:23.534 -03:00 [INF] HTTP GET /api/booking/6/pdf responded 401 in 151.2053 ms
+2024-07-29 14:12:23.535 -03:00 [INF] Request finished HTTP/1.1 GET https://localhost:7288/api/booking/6/pdf - 401 0 null 157.6568ms
+2024-07-29 14:12:29.500 -03:00 [INF] Request starting HTTP/1.1 GET https://localhost:7288/api/booking/6/pdf - null null
+2024-07-29 14:12:29.520 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.BookingController.GetBookingPdf (HotelBookingSystem.Api)'
+2024-07-29 14:12:29.531 -03:00 [INF] Route matched with {action = "GetBookingPdf", controller = "Booking"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetBookingPdf(Int32) on controller HotelBookingSystem.Api.Controllers.BookingController (HotelBookingSystem.Api).
+2024-07-29 14:12:29.798 -03:00 [INF] Executing command: SELECT "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId", "p"."PaymentId", "p"."Amount", "p"."BookingId", "p"."PaymentDate", "p"."PaymentMethod", "p"."Status", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt", "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Bookings" AS "b"
+LEFT JOIN "Payments" AS "p" ON "b"."BookingId" = "p"."BookingId"
+INNER JOIN "Hotels" AS "h" ON "b"."HotelId" = "h"."HotelId"
+INNER JOIN "Users" AS "u" ON "b"."UserId" = "u"."UserId"
+WHERE "b"."BookingId" = @__bookingId_0
+LIMIT 1
+2024-07-29 14:12:29.804 -03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__bookingId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId", "p"."PaymentId", "p"."Amount", "p"."BookingId", "p"."PaymentDate", "p"."PaymentMethod", "p"."Status", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt", "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role"
+FROM "Bookings" AS "b"
+LEFT JOIN "Payments" AS "p" ON "b"."BookingId" = "p"."BookingId"
+INNER JOIN "Hotels" AS "h" ON "b"."HotelId" = "h"."HotelId"
+INNER JOIN "Users" AS "u" ON "b"."UserId" = "u"."UserId"
+WHERE "b"."BookingId" = @__bookingId_0
+LIMIT 1
+2024-07-29 14:13:51.980 -03:00 [INF] User profile is available. Using 'C:\Users\loren\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-07-29 14:13:52.291 -03:00 [INF] Now listening on: https://localhost:7288
+2024-07-29 14:13:52.293 -03:00 [INF] Now listening on: http://localhost:5124
+2024-07-29 14:13:52.295 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-07-29 14:13:52.295 -03:00 [INF] Hosting environment: Development
+2024-07-29 14:13:52.296 -03:00 [INF] Content root path: C:\Users\loren\source\repos\Hotel Booking System\HotelBookingSystem.Api
+2024-07-29 14:13:52.866 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/index.html - null null
+2024-07-29 14:13:53.125 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/index.html - 200 null text/html;charset=utf-8 265.7545ms
+2024-07-29 14:13:53.156 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - null null
+2024-07-29 14:13:53.156 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/_vs/browserLink - null null
+2024-07-29 14:13:53.172 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_framework/aspnetcore-browser-refresh.js - 200 13780 application/javascript; charset=utf-8 16.8419ms
+2024-07-29 14:13:53.236 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/_vs/browserLink - 200 null text/javascript; charset=UTF-8 79.3323ms
+2024-07-29 14:13:53.329 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - null null
+2024-07-29 14:13:53.486 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7288/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 156.8917ms
+2024-07-29 14:13:56.903 -03:00 [INF] Request starting HTTP/1.1 GET https://localhost:7288/api/booking/6/pdf - null null
+2024-07-29 14:13:57.042 -03:00 [INF] Executing endpoint 'HotelBookingSystem.Api.Controllers.BookingController.GetBookingPdf (HotelBookingSystem.Api)'
+2024-07-29 14:13:57.071 -03:00 [INF] Route matched with {action = "GetBookingPdf", controller = "Booking"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetBookingPdf(Int32) on controller HotelBookingSystem.Api.Controllers.BookingController (HotelBookingSystem.Api).
+2024-07-29 14:14:00.121 -03:00 [INF] Executing command: SELECT "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId", "p"."PaymentId", "p"."Amount", "p"."BookingId", "p"."PaymentDate", "p"."PaymentMethod", "p"."Status", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt", "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role", "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+FROM "Bookings" AS "b"
+LEFT JOIN "Payments" AS "p" ON "b"."BookingId" = "p"."BookingId"
+INNER JOIN "Hotels" AS "h" ON "b"."HotelId" = "h"."HotelId"
+INNER JOIN "Users" AS "u" ON "b"."UserId" = "u"."UserId"
+INNER JOIN "Rooms" AS "r" ON "b"."RoomId" = "r"."RoomId"
+WHERE "b"."BookingId" = @__bookingId_0
+LIMIT 1
+2024-07-29 14:14:00.161 -03:00 [INF] Executed DbCommand (35ms) [Parameters=[@__bookingId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."BookingId", "b"."CheckInDate", "b"."CheckOutDate", "b"."HotelId", "b"."RoomId", "b"."SpecialRequests", "b"."TotalPrice", "b"."UserId", "p"."PaymentId", "p"."Amount", "p"."BookingId", "p"."PaymentDate", "p"."PaymentMethod", "p"."Status", "h"."HotelId", "h"."Address", "h"."Amenities", "h"."CityId", "h"."CreatedAt", "h"."Description", "h"."HotelType", "h"."Name", "h"."Owner", "h"."StarRating", "h"."ThumbnailUrl", "h"."UpdatedAt", "u"."UserId", "u"."Address", "u"."City", "u"."Country", "u"."DateOfBirth", "u"."Email", "u"."FirstName", "u"."LastName", "u"."PasswordHash", "u"."PhoneNumber", "u"."Role", "r"."RoomId", "r"."AdultCapacity", "r"."ChildCapacity", "r"."CreatedAt", "r"."DiscountedPrice", "r"."FeaturedDeal", "r"."HotelId", "r"."ImagesUrl", "r"."PricePerNight", "r"."RoomType", "r"."UpdatedAt"
+FROM "Bookings" AS "b"
+LEFT JOIN "Payments" AS "p" ON "b"."BookingId" = "p"."BookingId"
+INNER JOIN "Hotels" AS "h" ON "b"."HotelId" = "h"."HotelId"
+INNER JOIN "Users" AS "u" ON "b"."UserId" = "u"."UserId"
+INNER JOIN "Rooms" AS "r" ON "b"."RoomId" = "r"."RoomId"
+WHERE "b"."BookingId" = @__bookingId_0
+LIMIT 1
+2024-07-29 14:14:01.131 -03:00 [INF] Executing FileContentResult, sending file with download name 'Booking_6.pdf' ...
+2024-07-29 14:14:01.158 -03:00 [INF] Executed action HotelBookingSystem.Api.Controllers.BookingController.GetBookingPdf (HotelBookingSystem.Api) in 4077.3691ms
+2024-07-29 14:14:01.162 -03:00 [INF] Executed endpoint 'HotelBookingSystem.Api.Controllers.BookingController.GetBookingPdf (HotelBookingSystem.Api)'
+2024-07-29 14:14:01.168 -03:00 [INF] HTTP GET /api/booking/6/pdf responded 200 in 4256.0619 ms
+2024-07-29 14:14:01.184 -03:00 [INF] Request finished HTTP/1.1 GET https://localhost:7288/api/booking/6/pdf - 200 1331 application/pdf 4280.3413ms

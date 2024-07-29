@@ -7,7 +7,7 @@ using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.EmailSender;
-using HotelBookingSystem.Infrastructure.PdfGenerator;
+using HotelBookingSystem.Infrastructure.PdfGen;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
@@ -25,7 +25,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
         private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
         private readonly Mock<ICityRepository> _cityRepositoryMock;
         private readonly Mock<IEmailService> _emailServiceMock;
-        private readonly Mock<IPdfService> _pdfServiceMock;
+        private readonly Mock<IBookingPdfGenerator> _bookingPdfGenerator;
 
         public BookingServiceTests()
         {
@@ -36,7 +36,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
             _cityRepositoryMock = new Mock<ICityRepository>();
             _emailServiceMock = new Mock<IEmailService>();
-            _pdfServiceMock = new Mock<IPdfService>();
+            _bookingPdfGenerator = new Mock<IBookingPdfGenerator>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -56,7 +56,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 _httpContextAccessorMock.Object,
                 _cityRepositoryMock.Object,
                 _emailServiceMock.Object,
-                _pdfServiceMock.Object
+                _bookingPdfGenerator.Object
             );
         }
 
@@ -241,8 +241,8 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _bookingRepositoryMock.Setup(x => x.GetByIdAsync(booking.BookingId))
                 .ReturnsAsync(booking);
 
-            _pdfServiceMock.Setup(x => x.GenerateBookingPdf(It.IsAny<BookingResponse>()))
-                .Returns(pdfBytes);
+            _bookingPdfGenerator.Setup(x => x.GeneratePdfAsync(It.IsAny<Booking>()))
+                .ReturnsAsync(pdfBytes);
 
             var result = await _bookingService.GetBookingPdfAsync(booking.BookingId);
 
