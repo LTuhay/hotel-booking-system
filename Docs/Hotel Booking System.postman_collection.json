@@ -1,0 +1,1394 @@
+{
+	"info": {
+		"_postman_id": "eff11382-2a02-4780-ba74-19ab80d832e0",
+		"name": "Hotel Booking System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29639694"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"FirstName\": \"John\",\r\n  \"LastName\": \"Doe\",\r\n  \"Email\": \"john.doe@example.com\",\r\n  \"Password\": \"SecureP@ssw0rd\",\r\n  \"PhoneNumber\": \"+1234567890\",\r\n  \"DateOfBirth\": \"1990-01-01T00:00:00\",\r\n  \"Address\": \"123 Main St\",\r\n  \"City\": \"Springfield\",\r\n  \"Country\": \"USA\",\r\n  \"Role\": \"Customer\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/auth/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"FirstName\": \"Johny\",\r\n  \"LastName\": \"Deep\",\r\n  \"Email\": \"johny.deep32@example.com\",\r\n  \"Password\": \"SecureP@ssw0rd\",\r\n  \"PhoneNumber\": \"+1234567890\",\r\n  \"DateOfBirth\": \"1990-01-01T00:00:00\",\r\n  \"Address\": \"123 Main St\",\r\n  \"City\": \"Springfield\",\r\n  \"Country\": \"USA\",\r\n  \"Role\": \"Admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\": \"john.doe@example.com\",\r\n  \"Password\": \"SecureP@ssw0rd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\": \"johny.deep@example.com\",\r\n  \"Password\": \"SecureP@ssw0rd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "City",
+			"item": [
+				{
+					"name": "Create City",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzAzOTMxLCJleHAiOjE3MjIzMDc1MzEsImlhdCI6MTcyMjMwMzkzMSwiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hNxk6K72S4hJWLAMRMmSGZp6zrhYFw8DSYPT1FNtulo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Los Angeles\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10003\",\r\n    \"ThumbnailUrl\": \"http://example.com/images/los-angeles.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE4NzUyMTgsImV4cCI6MTcyMTg3ODgxOCwiaWF0IjoxNzIxODc1MjE4LCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.UFPo5DfJAUG8OUnVzVKanqssLnNdOxL2JdonG7tmWDg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"New York\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10001\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city/7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get city with hotels",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE4NzAzMTAsImV4cCI6MTcyMTg3MzkxMCwiaWF0IjoxNzIxODcwMzEwLCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.3GEwSexVGGJ0xMUxAo_9NOUJNBiCBMhCTBYAIPUd-wk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"New York\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10001\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city/6/with-hotels",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city",
+								"6",
+								"with-hotels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get popular cities",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE4NzAzMTAsImV4cCI6MTcyMTg3MzkxMCwiaWF0IjoxNzIxODcwMzEwLCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.3GEwSexVGGJ0xMUxAo_9NOUJNBiCBMhCTBYAIPUd-wk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"New York\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10001\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city/popular-cities",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city",
+								"popular-cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete City",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzAzOTMxLCJleHAiOjE3MjIzMDc1MzEsImlhdCI6MTcyMjMwMzkzMSwiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hNxk6K72S4hJWLAMRMmSGZp6zrhYFw8DSYPT1FNtulo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"New York\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10001\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city/7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update City",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzAzOTMxLCJleHAiOjE3MjIzMDc1MzEsImlhdCI6MTcyMjMwMzkzMSwiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hNxk6K72S4hJWLAMRMmSGZp6zrhYFw8DSYPT1FNtulo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Los Angeles\",\r\n    \"Country\": \"USA\",\r\n    \"PostOffice\": \"10002\",\r\n    \"ThumbnailUrl\": \"http://example.com/images/los-angeles.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/city/6",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"city",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hotel",
+			"item": [
+				{
+					"name": "Create Hotel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzA2Njg3LCJleHAiOjE3MjIzMTAyODcsImlhdCI6MTcyMjMwNjY4NywiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hx1J3BMxWmfkSOKk61oabMM-P5snCiUi95LfMNFG_Xs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Seaside Retreat\",\r\n    \"Owner\": \"Lucas Martinez\",\r\n    \"Address\": \"Ocean Drive 436\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 6,\r\n    \"Description\": \"A premium hotel with stunning ocean views and top-notch amenities.\",\r\n    \"ThumbnailUrl\": \"http://example.com/images/seaside-retreat.jpg\",\r\n    \"Amenities\": [\r\n        \"FreeWifi\",\r\n        \"Spa\",\r\n        \"SwimmingPool\"\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Hotel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzA2Njg3LCJleHAiOjE3MjIzMTAyODcsImlhdCI6MTcyMjMwNjY4NywiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hx1J3BMxWmfkSOKk61oabMM-P5snCiUi95LfMNFG_Xs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Seaside Retreat\",\r\n    \"Owner\": \"Lucas Martinez\",\r\n    \"Address\": \"Ocean Drive 555\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 6,\r\n    \"Description\": \"A premium hotel with stunning ocean views and top-notch amenities.\",\r\n    \"ThumbnailUrl\": \"http://example.com/images/seaside-retreat.jpg\",\r\n    \"Amenities\": [\r\n        \"FreeWifi\",\r\n        \"Spa\",\r\n        \"SwimmingPool\"\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hotel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Hotel Paradise 2\",\r\n    \"Owner\": \"Jane Doe\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 1,\r\n    \"Price\": 150.00,\r\n    \"Description\": \"A luxurious stay with a beautiful view.\",\r\n    \"ThumbnailUrl\": \"https://example.com/thumbnail.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hotel with reviews",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Hotel Paradise 2\",\r\n    \"Owner\": \"Jane Doe\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 1,\r\n    \"Price\": 150.00,\r\n    \"Description\": \"A luxurious stay with a beautiful view.\",\r\n    \"ThumbnailUrl\": \"https://example.com/thumbnail.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/8/with-reviews",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"8",
+								"with-reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get recent hotels",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/recent-hotels",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"recent-hotels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get featured deals",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE4NzA4NjksImV4cCI6MTcyMTg3NDQ2OSwiaWF0IjoxNzIxODcwODY5LCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.VH6m6PMp_j5EM95wSnIIoZCAdhrwRmdoWQbI3A4nwSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Hotel Paradise 2\",\r\n    \"Owner\": \"Jane Doe\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 1,\r\n    \"Price\": 150.00,\r\n    \"Description\": \"A luxurious stay with a beautiful view.\",\r\n    \"ThumbnailUrl\": \"https://example.com/thumbnail.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/featured-deals",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"featured-deals"
+							],
+							"query": [
+								{
+									"key": "int",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete hotel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMzA2Njg3LCJleHAiOjE3MjIzMTAyODcsImlhdCI6MTcyMjMwNjY4NywiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.hx1J3BMxWmfkSOKk61oabMM-P5snCiUi95LfMNFG_Xs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Hotel Paradise 2\",\r\n    \"Owner\": \"Jane Doe\",\r\n    \"HotelType\": \"Luxury\",\r\n    \"CityId\": 1,\r\n    \"Price\": 150.00,\r\n    \"Description\": \"A luxurious stay with a beautiful view.\",\r\n    \"ThumbnailUrl\": \"https://example.com/thumbnail.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/11",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search hotel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE5MzYwODAsImV4cCI6MTcyMTkzOTY4MCwiaWF0IjoxNzIxOTM2MDgwLCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.CyTROjeHLIRck0XFu1Se8gvnYZI5RsHwfoIVMsZ_-nI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/search",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"search"
+							],
+							"query": [
+								{
+									"key": "Amenities",
+									"value": "Spa, Gym",
+									"disabled": true
+								},
+								{
+									"key": "HotelType",
+									"value": "Luxury",
+									"disabled": true
+								},
+								{
+									"key": "MinRating",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "MaxRating",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "Query",
+									"value": "Kansas",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Review hotel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rating\": 5,\r\n  \"comment\": \"Fantastic\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/8/reviews",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"8",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete hotel review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"hotelId\": 8,\r\n  \"rating\": 1,\r\n  \"comment\": \"I didn't like it\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/hotel/8/reviews/4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"hotel",
+								"8",
+								"reviews",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Create Room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMjg4NDEyLCJleHAiOjE3MjIyOTIwMTIsImlhdCI6MTcyMjI4ODQxMiwiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.EaPF7o19utxS6M_nA97wr6PgW_SiHUysHNglyS25ZDo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"RoomType\": \"Suite\",\r\n        \"PricePerNight\": 320.00,\r\n        \"AdultCapacity\": 2,\r\n        \"ChildCapacity\": 2,\r\n        \"FeaturedDeal\": false,\r\n        \"ImagesUrl\": [\r\n            \"http://example.com/images/hotel5_room3_1.jpg\",\r\n            \"http://example.com/images/hotel5_room3_2.jpg\"\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/room/8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"room",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYW1laWQiOiIyIiwibmJmIjoxNzIyMjg4NDEyLCJleHAiOjE3MjIyOTIwMTIsImlhdCI6MTcyMjI4ODQxMiwiaXNzIjoiSG90ZWxCb29raW5nU3lzdGVtQVBJIiwiYXVkIjoiSG90ZWxCb29raW5nU3lzdGVtVXNlcnMifQ.EaPF7o19utxS6M_nA97wr6PgW_SiHUysHNglyS25ZDo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"RoomType\": \"Suite\",\r\n        \"PricePerNight\": 310.00,\r\n        \"AdultCapacity\": 2,\r\n        \"ChildCapacity\": 2,\r\n        \"FeaturedDeal\": false,\r\n        \"ImagesUrl\": [\r\n            \"http://example.com/images/hotel5_room3_1.jpg\",\r\n            \"http://example.com/images/hotel5_room3_2.jpg\"\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/room/8/28",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"room",
+								"8",
+								"28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get room",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE5Mjk5MjgsImV4cCI6MTcyMTkzMzUyOCwiaWF0IjoxNzIxOTI5OTI4LCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.RZX4z7g3YOHi74-v0I_mZ9MYKt0OHa7PWTbG15wKC80",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"HotelId\": 1,                \r\n  \"RoomType\": \"Deluxe\",        \r\n  \"PricePerNight\": 120.00,    \r\n  \"AdultCapacity\": 4,          \r\n  \"ChildCapacity\": 2,         \r\n  \"FeaturedDeal\": false,        \r\n  \"DiscountedPrice\": 90.00,    \r\n  \"ImagesUrl\": [\"image1.jpg\", \"image2.jpg\"]  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/room/8/27",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"room",
+								"8",
+								"27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search room",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE5MzYwODAsImV4cCI6MTcyMTkzOTY4MCwiaWF0IjoxNzIxOTM2MDgwLCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.CyTROjeHLIRck0XFu1Se8gvnYZI5RsHwfoIVMsZ_-nI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/room/search",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"room",
+								"search"
+							],
+							"query": [
+								{
+									"key": "RoomType",
+									"value": "Double",
+									"disabled": true
+								},
+								{
+									"key": "Children",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "Adults",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "MinPrice",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "MaxPrice",
+									"value": "200",
+									"disabled": true
+								},
+								{
+									"key": "CheckInDate",
+									"value": "2025-08-01",
+									"disabled": true
+								},
+								{
+									"key": "CheckOutDate",
+									"value": "2025-08-05",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Room",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG55LmRlZXBAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MjE4NzA4NjksImV4cCI6MTcyMTg3NDQ2OSwiaWF0IjoxNzIxODcwODY5LCJpc3MiOiJIb3RlbEJvb2tpbmdTeXN0ZW1BUEkiLCJhdWQiOiJIb3RlbEJvb2tpbmdTeXN0ZW1Vc2VycyJ9.VH6m6PMp_j5EM95wSnIIoZCAdhrwRmdoWQbI3A4nwSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"HotelId\": 1,                \r\n  \"RoomType\": \"Deluxe\",        \r\n  \"PricePerNight\": 120.00,    \r\n  \"AdultCapacity\": 4,          \r\n  \"ChildCapacity\": 2,         \r\n  \"FeaturedDeal\": false,        \r\n  \"DiscountedPrice\": 90.00,    \r\n  \"ImagesUrl\": [\"image1.jpg\", \"image2.jpg\"]  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/room/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"room",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Create Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomId\": 15,\r\n    \"specialRequests\" : \"Special request example\",\r\n    \"checkInDate\": \"2024-09-30T00:00:00\",\r\n    \"checkOutDate\": \"2024-10-01T00:00:00\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/booking",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/booking/15",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"booking",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking Pdf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/booking/15/pdf",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"booking",
+								"15",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/booking/15",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"booking",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Create Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"BookingId\": 15,\r\n    \"PaymentMethod\": \"CreditCard\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/payment",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/payment/4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"payment",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change payment status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZWlkIjoiMSIsIm5iZiI6MTcyMjMwNzE0NywiZXhwIjoxNzIyMzEwNzQ3LCJpYXQiOjE3MjIzMDcxNDcsImlzcyI6IkhvdGVsQm9va2luZ1N5c3RlbUFQSSIsImF1ZCI6IkhvdGVsQm9va2luZ1N5c3RlbVVzZXJzIn0.GvX7X3mSCfxToQeNKiQrBGSWGJ6DhpWHVE_yUav9cqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    \"Completed\"\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7288/api/payment/4/status",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7288",
+							"path": [
+								"api",
+								"payment",
+								"4",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
