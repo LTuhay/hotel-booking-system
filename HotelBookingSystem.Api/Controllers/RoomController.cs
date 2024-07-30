@@ -21,7 +21,7 @@ namespace HotelBookingSystem.Api.Controllers
         public async Task<IActionResult> CreateRoom(int hotelId, [FromBody] RoomRequest request)
         {
             var room = await _roomService.CreateRoomAsync(hotelId, request);
-            return CreatedAtAction(nameof(GetRoomById), new { roomId = room.RoomId }, room);
+            return CreatedAtAction(nameof(GetRoomById), new { hotelId = room.HotelId, roomId = room.RoomId }, room);
         }
 
         [HttpGet("{hotelId}/{roomId}")]

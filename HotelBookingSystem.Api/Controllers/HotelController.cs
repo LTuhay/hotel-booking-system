@@ -36,6 +36,13 @@ namespace HotelBookingSystem.Api.Controllers
             return Ok(hotel);
         }
 
+        [HttpGet("{hotelId}/with-reviews")]
+        public async Task<IActionResult> GetHotelByIdWithReviews(int hotelId)
+        {
+            var hotel = await _hotelService.GetHotelByIdWithReviewsAsync(hotelId);
+            return Ok(hotel);
+        }
+
 
 
         [Authorize(Policy = "AdminPolicy")]

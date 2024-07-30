@@ -22,7 +22,6 @@ namespace HotelBookingSystem.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBooking([FromBody] BookingRequest bookingRequest)
         {
-
             var result = await _bookingService.CreateBookingAsync(bookingRequest);
             return CreatedAtAction(nameof(CreateBooking), result);
         }

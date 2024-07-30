@@ -8,13 +8,6 @@ namespace HotelBookingSystem.Application.Validators
         public RoomSearchParametersValidator()
         {
 
-            RuleFor(x => x.CheckInDate)
-                .GreaterThan(DateTime.Today)
-                .WithMessage("Check-in date must be in the future.");
-
-            RuleFor(x => x.CheckOutDate)
-                .GreaterThan(x => x.CheckInDate)
-                .WithMessage("Check-out date must be later than check-in date.");
 
             RuleFor(x => x.Adults)
                 .GreaterThan(0).WithMessage("Number of adults must be at least 1.");

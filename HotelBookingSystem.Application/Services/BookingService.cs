@@ -124,6 +124,7 @@ namespace HotelBookingSystem.Application.Services
         {
             var booking = await _bookingRepository.GetByIdAsync(bookingId);
             if (booking == null) throw new KeyNotFoundException("Booking not found");
+            if (booking.Payment != null) throw new InvalidOperationException("Cannot delete booking with an associated payment.");
 
             var city = await _cityRepository.GetByIdAsync(booking.Hotel.CityId);
             await SubstractCityVisitors(city);
