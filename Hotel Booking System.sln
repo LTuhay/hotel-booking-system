@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBookingSystem.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBookingSystem.Application", "HotelBookingSystem.Application\HotelBookingSystem.Application.csproj", "{8E535E0E-B6BE-44B4-9D69-8AEC31CA33EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingSystem.Tests", "HotelBookingSystem.Tests\HotelBookingSystem.Tests.csproj", "{A5DA8108-5C1A-4F88-ACAC-0DDB38365E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBookingSystem.Tests", "HotelBookingSystem.Tests\HotelBookingSystem.Tests.csproj", "{A5DA8108-5C1A-4F88-ACAC-0DDB38365E72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

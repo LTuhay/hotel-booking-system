@@ -13,45 +13,15 @@ namespace HotelBookingSystem.Infrastructure.Repository
         {
         }
 
-        public async Task<IList<Hotel>> SearchAsync(ISearchParameters searchParameters)
+        public async Task<(IList<Hotel> Hotels, int TotalResults)> SearchAsync(IHotelSearchParameters searchParameters)
         {
             var query = _context.Hotels
-                .Include(h => h.Rooms)
-                .ThenInclude(r => r.Bookings)
-                .Include(h => h.GuestReviews)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchParameters.Query))
             {
                 query = query.Where(h => h.Name.Contains(searchParameters.Query) ||
                                           h.City.Name.Contains(searchParameters.Query));
-            }
-
-            if (searchParameters.CheckInDate != null && searchParameters.CheckOutDate != null)
-            {
-
-                    query = query.Where(h => h.Rooms.Any(r => r.Bookings.All(b => b.CheckOutDate <= searchParameters.CheckInDate || b.CheckInDate >= searchParameters.CheckOutDate)));
-
-            }
-
-            if (searchParameters.Adults.HasValue)
-            {
-                query = query.Where(h => h.Rooms.Any(r => r.AdultCapacity >= searchParameters.Adults));
-            }
-
-            if (searchParameters.Children.HasValue)
-            {
-                query = query.Where(h => h.Rooms.Any(r => r.ChildCapacity >= searchParameters.Children));
-            }
-
-            if (searchParameters.MinPrice.HasValue)
-            {
-                query = query.Where(h => h.Rooms.Any(r => r.PricePerNight >= searchParameters.MinPrice));
-            }
-
-            if (searchParameters.MaxPrice.HasValue)
-            {
-                query = query.Where(h => h.Rooms.Any(r => r.PricePerNight <= searchParameters.MaxPrice));
             }
 
             if (searchParameters.MinRating.HasValue)
@@ -79,22 +49,6 @@ namespace HotelBookingSystem.Infrastructure.Repository
                 query = query.Where(h => amenitiesEnums.All(a => h.Amenities.Contains(a)));
             }
 
-            if (searchParameters.RoomTypes != null && searchParameters.RoomTypes.Any())
-            {
-                var roomTypesList = searchParameters.RoomTypes
-                    .SelectMany(rt => rt.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(s => s.Trim()))
-                    .ToList();
-
-                var roomTypesEnums = roomTypesList
-                    .Where(rt => Enum.TryParse(typeof(RoomType), rt, out _))
-                    .Select(rt => (RoomType)Enum.Parse(typeof(RoomType), rt))
-                    .ToList();
-
-                query = query.Where(h => roomTypesEnums.All(rt => h.Rooms.Any(r => r.RoomType == rt)));
-            }
-
-
             if (searchParameters.HotelType != null && searchParameters.HotelType.Any())
             {
                 if (Enum.TryParse(searchParameters.HotelType, out HotelType hotelTypeEnum) && hotelTypeEnum != default)
@@ -110,41 +64,40 @@ namespace HotelBookingSystem.Infrastructure.Repository
                 .Take(searchParameters.PageSize)
                 .ToListAsync();
 
-            return hotels;
+
+            return (hotels, totalResults);
+
         }
 
-        public override async Task<Hotel> GetByIdAsync(int id)
+
+
+        public async Task<Hotel> GetByIdWithReviewsAsync(int id)
         {
-            return await _context.Hotels
-                .Include(h => h.Rooms)
-                .ThenInclude(r=> r.Bookings)
+            var result = await _context.Hotels
                 .Include(h => h.GuestReviews)
                 .FirstOrDefaultAsync(h => h.HotelId == id);
+            return result;
         }
 
         public async Task<IEnumerable<Hotel>> GetFeaturedDealsAsync(int limit)
         {
-
             var hotelsWithFeaturedDeals = await _context.Hotels
-                   .Include(h => h.Rooms)  
-                   .Include(h => h.GuestReviews) 
-                   .Where(h => h.Rooms != null && h.Rooms.Any(r => r.FeaturedDeal))
-                   .ToListAsync();
+                .Include(h => h.Rooms)
+                .Where(h => h.Rooms.Any(r => r.FeaturedDeal))
+                .Select(h => new
+                {
+                    Hotel = h,
+                    MinDiscountedPrice = h.Rooms
+                        .Where(r => r.FeaturedDeal)
+                        .Select(r => r.DiscountedPrice ?? double.MaxValue)
+                        .Min()
+                })
+                .OrderBy(x => x.MinDiscountedPrice)
+                .Take(limit)
+                .ToListAsync();
 
             var sortedHotels = hotelsWithFeaturedDeals
-                .Select(hotel => new
-                {
-                    Hotel = hotel,
-                    MinDiscountedPrice = hotel.Rooms != null
-                        ? hotel.Rooms
-                            .Where(r => r.FeaturedDeal)
-                            .Select(r => r.DiscountedPrice ?? decimal.MaxValue)  
-                            .Min()
-                        : decimal.MaxValue
-                })
-                .OrderBy(h => h.MinDiscountedPrice)
-                .Take(limit)
-                .Select(h => h.Hotel)
+                .Select(x => x.Hotel)
                 .ToList();
 
             return sortedHotels;

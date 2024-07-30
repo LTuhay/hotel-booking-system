@@ -35,76 +35,149 @@ namespace HotelBookingSystem.Tests.ServiceTests
         [Fact]
         public async Task CreateRoomAsync_ShouldReturnRoomResponse()
         {
-            var request = new RoomRequest { HotelId = 1 };
-            var room = new Room { RoomId = 1, HotelId = 1 };
+            var hotelId = 1;
+            var request = new RoomRequest
+            {
+            };
+            var room = new Room { RoomId = 1, HotelId = hotelId };
             var roomResponse = _mapper.Map<RoomResponse>(room);
 
-            _hotelRepositoryMock.Setup(repo => repo.ExistsAsync(request.HotelId)).ReturnsAsync(true);
+            _hotelRepositoryMock.Setup(repo => repo.ExistsAsync(hotelId)).ReturnsAsync(true);
             _roomRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<Room>())).ReturnsAsync(room);
 
-            var result = await _roomService.CreateRoomAsync(request);
+            var result = await _roomService.CreateRoomAsync(hotelId, request);
 
             result.Should().BeEquivalentTo(roomResponse);
         }
+
+        [Fact]
+        public async Task CreateRoomAsync_HotelNotFound_ShouldThrowKeyNotFoundException()
+        {
+            var hotelId = 1;
+            var request = new RoomRequest { };
+
+            _hotelRepositoryMock.Setup(repo => repo.ExistsAsync(hotelId)).ReturnsAsync(false);
+
+            Func<Task> act = async () => await _roomService.CreateRoomAsync(hotelId, request);
+
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
+        [Fact]
+        public async Task GetRoomByIdAsync_InvalidHotelId_ShouldThrowArgumentException()
+        {
+            var roomId = 1;
+            var hotelId = 1;
+            var room = new Room { RoomId = roomId, HotelId = 2 };
+            var roomResponse = _mapper.Map<RoomResponse>(room);
+
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
+
+            Func<Task> act = async () => await _roomService.GetRoomByIdAsync(hotelId, roomId);
+
+            await act.Should().ThrowAsync<ArgumentException>();
+        }
+
+
 
         [Fact]
         public async Task UpdateRoomAsync_ShouldReturnUpdatedRoomResponse()
         {
             var roomId = 1;
-            var request = new RoomRequest { HotelId = 1 };
-            var room = new Room { RoomId = roomId, HotelId = 1 };
-            var updatedRoom = new Room { RoomId = roomId, HotelId = 1 };
+            var hotelId = 1;
+            var request = new RoomRequest
+            {
+            };
+            var room = new Room { RoomId = roomId, HotelId = hotelId };
+            var updatedRoom = new Room { RoomId = roomId, HotelId = hotelId };
             var roomResponse = _mapper.Map<RoomResponse>(updatedRoom);
 
             _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
-            _mapper.Map(request, room);
+            _mapper.Map(request, room);  
             _roomRepositoryMock.Setup(repo => repo.UpdateAsync(room)).ReturnsAsync(updatedRoom);
 
-            var result = await _roomService.UpdateRoomAsync(roomId, request);
+            var result = await _roomService.UpdateRoomAsync(hotelId, roomId, request);
 
             result.Should().BeEquivalentTo(roomResponse);
         }
+
+        [Fact]
+        public async Task UpdateRoomAsync_InvalidHotelId_ShouldThrowArgumentException()
+        {
+            var roomId = 1;
+            var hotelId = 1;
+            var request = new RoomRequest { };
+            var room = new Room { RoomId = roomId, HotelId = 2 };
+
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
+
+            Func<Task> act = async () => await _roomService.UpdateRoomAsync(hotelId, roomId, request);
+
+            await act.Should().ThrowAsync<ArgumentException>();
+        }
+
+
+        [Fact]
+        public async Task UpdateRoomAsync_RoomNotFound_ShouldThrowKeyNotFoundException()
+        {
+            var roomId = 1;
+            var hotelId = 1;
+            var request = new RoomRequest { };
+
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync((Room)null);
+
+            Func<Task> act = async () => await _roomService.UpdateRoomAsync(hotelId, roomId, request);
+
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
 
         [Fact]
         public async Task DeleteRoomAsync_ShouldCallDeleteAsync()
         {
             var roomId = 1;
+            var hotelId = 1;
+            var room = new Room { RoomId = roomId, HotelId = hotelId };
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
 
-            await _roomService.DeleteRoomAsync(roomId);
+            await _roomService.DeleteRoomAsync(hotelId, roomId);
 
             _roomRepositoryMock.Verify(repo => repo.DeleteAsync(roomId), Times.Once);
         }
 
         [Fact]
+        public async Task DeleteRoomAsync_InvalidHotelId_ShouldThrowArgumentException()
+        {
+            var roomId = 1;
+            var hotelId = 1;
+            var room = new Room { RoomId = roomId, HotelId = 2 };
+
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
+
+            Func<Task> act = async () => await _roomService.DeleteRoomAsync(hotelId, roomId);
+
+            await act.Should().ThrowAsync<ArgumentException>();
+        }
+
+
+
+        [Fact]
         public async Task GetRoomByIdAsync_ShouldReturnRoomResponse()
         {
             var roomId = 1;
-            var room = new Room { RoomId = roomId };
+            var hotelId = 1;
+            var room = new Room { RoomId = roomId, HotelId = hotelId };
             var roomResponse = _mapper.Map<RoomResponse>(room);
 
             _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId)).ReturnsAsync(room);
 
-            var result = await _roomService.GetRoomByIdAsync(roomId);
+            var result = await _roomService.GetRoomByIdAsync(hotelId, roomId);
 
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(roomResponse);
         }
 
-        [Fact]
-        public async Task AddRoomsToHotelAsync_ShouldReturnHotelResponse()
-        {
-            var hotelId = 1;
-            var rooms = new List<RoomRequest> { new RoomRequest { HotelId = hotelId } };
-            var hotel = new Hotel { HotelId = hotelId };
-            var hotelResponse = _mapper.Map<HotelResponse>(hotel);
-            var roomEntities = new List<Room> { new Room { HotelId = hotelId } };
 
-            _hotelRepositoryMock.Setup(repo => repo.GetByIdAsync(hotelId)).ReturnsAsync(hotel);
-            _roomRepositoryMock.Setup(repo => repo.AddRangeAsync(roomEntities));
-
-            var result = await _roomService.AddRoomsToHotelAsync(hotelId, rooms);
-
-            result.Should().BeEquivalentTo(hotelResponse);
-        }
     }
 }
+

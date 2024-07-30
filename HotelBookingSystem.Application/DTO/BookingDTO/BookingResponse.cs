@@ -21,7 +21,7 @@ namespace HotelBookingSystem.Application.DTO.BookingDTO
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public string SpecialRequests { get; set; }
-        public decimal TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
         public PaymentResponse? Payment { get; set; }
     }
 

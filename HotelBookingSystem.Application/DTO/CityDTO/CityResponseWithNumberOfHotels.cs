@@ -1,8 +1,12 @@
-﻿using HotelBookingSystem.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HotelBookingSystem.Application.DTO.CityDTO
 {
-    public class CityResponse
+    public class CityResponseWithNumberOfHotels
     {
         public int CityId { get; set; }
         public string Name { get; set; }
@@ -12,6 +16,7 @@ namespace HotelBookingSystem.Application.DTO.CityDTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int Visitors { get; set; }
+        public int NumberOfHotels { get; set; }
 
     }
 }

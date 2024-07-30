@@ -8,7 +8,6 @@ namespace HotelBookingSystem.Application.Validators
     {
         public RoomRequestValidator()
         {
-            RuleFor(x => x.HotelId).GreaterThan(0).WithMessage("HotelId must be greater than 0");
             RuleFor(x => x.RoomType).NotEmpty().WithMessage("RoomType is required")
                 .Must(BeValidRoomType).WithMessage("Invalid RoomType");
             RuleFor(x => x.PricePerNight).GreaterThan(0).WithMessage("PricePerNight must be greater than 0");

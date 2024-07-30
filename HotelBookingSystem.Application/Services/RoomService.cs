@@ -2,7 +2,9 @@
 using HotelBookingSystem.Application.DTO.HotelDTO;
 using HotelBookingSystem.Application.DTO.RoomDTO;
 using HotelBookingSystem.Domain.Entities;
+using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Domain.Interfaces.Repository;
+using HotelBookingSystem.Domain.Utilities;
 
 namespace HotelBookingSystem.Application.Services
 {
@@ -19,60 +21,78 @@ namespace HotelBookingSystem.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<RoomResponse> CreateRoomAsync(RoomRequest request)
+        public async Task<RoomResponse> CreateRoomAsync(int hotelId, RoomRequest request)
         {
             var room = _mapper.Map<Room>(request);
-            if (!await _hotelRepository.ExistsAsync(room.HotelId))
+            if (!await _hotelRepository.ExistsAsync(hotelId))
             {
                 throw new KeyNotFoundException("Hotel not found");
             }
             room.CreatedAt = DateTime.UtcNow;
             room.UpdatedAt = DateTime.UtcNow;
+            room.HotelId = hotelId;
 
             var createdRoom = await _roomRepository.AddAsync(room);
             return _mapper.Map<RoomResponse>(createdRoom);
         }
 
-        public async Task<RoomResponse> UpdateRoomAsync(int roomId, RoomRequest request)
+        public async Task<RoomResponse> UpdateRoomAsync(int hotelId, int roomId, RoomRequest request)
         {
             var room = await _roomRepository.GetByIdAsync(roomId);
             if (room == null)
                 throw new KeyNotFoundException("Room not found");
-
+            if (room.HotelId != hotelId)
+            {
+                throw new ArgumentException("Invalid hotel ID");
+            }
             _mapper.Map(request, room);
             room.UpdatedAt = DateTime.UtcNow;
+            room.HotelId = hotelId;
 
             var updatedRoom = await _roomRepository.UpdateAsync(room);
             return _mapper.Map<RoomResponse>(updatedRoom);
         }
 
-        public async Task DeleteRoomAsync(int roomId)
+        public async Task DeleteRoomAsync(int hotelId, int roomId)
         {
-
+            var room = await _roomRepository.GetByIdAsync(roomId);
+            if (room.HotelId != hotelId)
+            {
+                throw new ArgumentException("Invalid hotel ID");
+            }
             await _roomRepository.DeleteAsync(roomId);
         }
 
-        public async Task<RoomResponse> GetRoomByIdAsync(int roomId)
+        public async Task<RoomResponse> GetRoomByIdAsync(int hotelId, int roomId)
         {
             var room = await _roomRepository.GetByIdAsync(roomId);
             if (room == null)
                 throw new KeyNotFoundException("Room not found");
+            if (room.HotelId != hotelId)
+            {
+                throw new ArgumentException("Invalid hotel ID");
+            }
             return _mapper.Map<RoomResponse>(room);
         }
 
-        public async Task<HotelResponse> AddRoomsToHotelAsync(int hotelId, List<RoomRequest> rooms)
+        public async Task<IPaginatedList<RoomResponse>> SearchRoomsAsync(RoomSearchParameters searchParameters)
         {
-            var hotel = await _hotelRepository.GetByIdAsync(hotelId);
-            if (hotel == null)
-                throw new KeyNotFoundException("Hotel not found");
+            var (rooms, totalResults) = await _roomRepository.SearchAsync(searchParameters);
 
-            var roomEntities = rooms.Select(r => _mapper.Map<Room>(r)).ToList();
-            roomEntities.ForEach(r => r.CreatedAt = DateTime.UtcNow);
-            roomEntities.ForEach(r => r.UpdatedAt = DateTime.UtcNow);
+            var totalPages = (int)Math.Ceiling(totalResults / (double)searchParameters.PageSize);
+            var roomResponses = _mapper.Map<List<RoomResponse>>(rooms);
 
-            await _roomRepository.AddRangeAsync(roomEntities);
+            var paginatedList = new PaginatedList<RoomResponse>
+            {
+                TotalResults = totalResults,
+                CurrentPage = searchParameters.Page,
+                PageSize = searchParameters.PageSize,
+                TotalPages = totalPages,
+                Items = roomResponses
+            };
 
-            return _mapper.Map<HotelResponse>(hotel);
+            return paginatedList;
         }
+
     }
 }

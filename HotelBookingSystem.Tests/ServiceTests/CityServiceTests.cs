@@ -114,5 +114,50 @@ namespace HotelBookingSystem.Tests.ServiceTests
 
             _cityRepositoryMock.Verify(repo => repo.DeleteAsync(cityId), Times.Once);
         }
+
+        [Fact]
+        public async Task GetPopularCitiesAsync_ShouldReturnPopularCities()
+        {
+            var cities = new List<City>
+                {
+                    new City { CityId = 1, Name = "Popular City 1" },
+                    new City { CityId = 2, Name = "Popular City 2" }
+                };
+
+            _cityRepositoryMock.Setup(repo => repo.GetPopularCitiesAsync(It.IsAny<int>())).ReturnsAsync(cities);
+
+            var result = await _cityService.GetPopularCitiesAsync(2);
+
+            result.Should().HaveCount(2);
+            result.First().Name.Should().Be("Popular City 1");
+            result.Last().Name.Should().Be("Popular City 2");
+            _cityRepositoryMock.Verify(repo => repo.GetPopularCitiesAsync(2), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetPopularCitiesAsync_ShouldReturnEmptyList_WhenNoCitiesArePopular()
+        {
+            _cityRepositoryMock.Setup(repo => repo.GetPopularCitiesAsync(It.IsAny<int>())).ReturnsAsync(new List<City>());
+
+            var result = await _cityService.GetPopularCitiesAsync(0);
+
+            result.Should().BeEmpty();
+            _cityRepositoryMock.Verify(repo => repo.GetPopularCitiesAsync(0), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateCityAsync_ShouldThrowKeyNotFoundException_WhenCityDoesNotExist()
+        {
+            var cityId = 1;
+            var cityRequest = new CityRequest { Name = "Updated City", Country = "Updated Country" };
+
+            _cityRepositoryMock.Setup(repo => repo.GetByIdAsync(cityId)).ReturnsAsync((City)null);
+
+            Func<Task> act = async () => await _cityService.UpdateCityAsync(cityId, cityRequest);
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+            _cityRepositoryMock.Verify(repo => repo.GetByIdAsync(cityId), Times.Once);
+        }
+
+
     }
 }

@@ -36,6 +36,15 @@ namespace HotelBookingSystem.Application.Services
             return _mapper.Map<CityResponse>(city);
         }
 
+        public async Task<CityResponseWithNumberOfHotels> GetCityByIdWithHotelsAsync(int id)
+        {
+            var city = await _cityRepository.GetByIdWithHotelsAsync(id);
+            if (city == null)
+                throw new KeyNotFoundException("City not found");
+
+            return _mapper.Map<CityResponseWithNumberOfHotels>(city);
+        }
+
         public async Task<CityResponse> UpdateCityAsync(int id, CityRequest request)
         {
             var city = await _cityRepository.GetByIdAsync(id);

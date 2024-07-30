@@ -6,6 +6,7 @@ using HotelBookingSystem.Application.MappingProfiles;
 using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Application.Utilities;
 using HotelBookingSystem.Domain.Entities;
+using HotelBookingSystem.Domain.Enums;
 using HotelBookingSystem.Domain.Interfaces.Repository;
 using HotelBookingSystem.Infrastructure.EmailSender;
 using HotelBookingSystem.Infrastructure.PdfGen;
@@ -181,16 +182,6 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 .Should().ThrowAsync<KeyNotFoundException>();
         }
 
-        [Fact]
-        public async Task UpdateBookingAsync_ShouldThrowKeyNotFoundException_WhenBookingNotFound()
-        {
-            _bookingRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Booking)null);
-
-            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
-
-            await _bookingService.Invoking(service => service.UpdateBookingAsync(1, request))
-                .Should().ThrowAsync<KeyNotFoundException>();
-        }
 
         [Fact]
         public async Task GetBookingDetailsAsync_ShouldThrowKeyNotFoundException_WhenBookingNotFound()
@@ -224,11 +215,11 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 SpecialRequests = "None",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(3),
-                TotalPrice = 300m,
+                TotalPrice = 300,
                 Payment = new PaymentResponse
                 {
                     PaymentId = 1,
-                    Amount = 300m,
+                    Amount = 300,
                     PaymentDate = DateTime.UtcNow,
                     PaymentMethod = "Credit Card",
                     Status = "Completed"
@@ -253,6 +244,166 @@ namespace HotelBookingSystem.Tests.ServiceTests
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(pdfBytes);
         }
+
+        [Fact]
+        public async Task CreateBookingAsync_ShouldCalculateTotalPriceCorrectly()
+        {
+            _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
+
+            var room = new Room
+            {
+                RoomId = 1,
+                HotelId = 1,
+                PricePerNight = 100,
+                FeaturedDeal = true,
+                DiscountedPrice = 80,
+                Bookings = new List<Booking>(),
+            };
+
+            var hotel = new Hotel
+            {
+                HotelId = 1,
+                Name = "Test Hotel",
+            };
+
+            var user = new User
+            {
+                UserId = 1,
+                Email = "user@example.com",
+            };
+
+            _roomRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(room);
+            _hotelRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(hotel);
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(user);
+            _cityRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(new City { CityId = 1 });
+
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(3) };
+
+            var result = await _bookingService.CreateBookingAsync(request);
+
+            result.TotalPrice.Should().Be(240); 
+        }
+
+        [Fact]
+        public async Task CreateBookingAsync_ShouldSendEmailWithBookingDetails()
+        {
+            _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
+
+            var city = new City
+            {
+                CityId = 1,
+                Name = "Test City",
+            };
+
+            var hotel = new Hotel
+            {
+                HotelId = 1,
+                Name = "Test Hotel",
+            };
+
+            var room = new Room
+            {
+                RoomId = 1,
+                HotelId = 1,
+                Bookings = new List<Booking>(),
+            };
+
+            var user = new User
+            {
+                UserId = 1,
+                Email = "user@example.com",
+            };
+
+            _roomRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(room);
+            _hotelRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(hotel);
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(user);
+            _cityRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(city);
+
+            _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            var request = new BookingRequest { RoomId = 1, CheckInDate = DateTime.Now, CheckOutDate = DateTime.Now.AddDays(1) };
+
+            await _bookingService.CreateBookingAsync(request);
+
+            _emailServiceMock.Verify(x => x.SendEmailAsync(user.Email, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task CancelBookingAsync_ShouldSubtractCityVisitors_WhenBookingIsCanceled()
+        {
+            var city = new City
+            {
+                CityId = 1,
+                Visitors = 5,
+            };
+
+            var hotel = new Hotel
+            {
+                HotelId = 1,
+                CityId = 1,
+            };
+
+            var booking = new Booking
+            {
+                BookingId = 1,
+                Hotel = hotel,
+            };
+
+            _bookingRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(booking);
+            _cityRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(city);
+
+            await _bookingService.CancelBookingAsync(1);
+
+            city.Visitors.Should().Be(4); 
+        }
+
+        [Fact]
+        public async Task GetBookingDetailsAsync_ShouldReturnBookingResponse_WhenBookingExists()
+        {
+            var booking = new Booking
+            {
+                BookingId = 1,
+                User = new User { FirstName = "John", LastName = "Doe" },
+                Hotel = new Hotel { Name = "Test Hotel" },
+                Room = new Room { RoomType = RoomType.Deluxe },
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(3),
+                TotalPrice = 300,
+            };
+
+            _bookingRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(booking);
+
+            var result = await _bookingService.GetBookingDetailsAsync(1);
+
+            result.Should().BeOfType<BookingResponse>();
+            result.UserFirstName.Should().Be("John");
+            result.HotelName.Should().Be("Test Hotel");
+        }
+
+        [Fact]
+        public async Task GetBookingPdfAsync_ShouldGeneratePdf_WhenBookingExists()
+        {
+            var booking = new Booking
+            {
+                BookingId = 1,
+            };
+
+            var pdfBytes = new byte[] { 1, 2, 3, 4, 5 };
+
+            _bookingRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(booking);
+            _bookingPdfGenerator.Setup(x => x.GeneratePdfAsync(It.IsAny<Booking>())).ReturnsAsync(pdfBytes);
+
+            var result = await _bookingService.GetBookingPdfAsync(1);
+
+            result.Should().BeEquivalentTo(pdfBytes);
+        }
+
+
     }
+
+
 }
 

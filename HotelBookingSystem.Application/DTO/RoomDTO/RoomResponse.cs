@@ -10,9 +10,9 @@ namespace HotelBookingSystem.Application.DTO.RoomDTO
         public int RoomId { get; set; }
         public int HotelId { get; set; }
         public string RoomType { get; set; }
-        public decimal PricePerNight { get; set; }
+        public double PricePerNight { get; set; }
         public bool FeaturedDeal { get; set; }
-        public decimal? DiscountedPrice { get; set; }
+        public double? DiscountedPrice { get; set; }
         public int AdultCapacity { get; set; }
         public int ChildCapacity { get; set; }
         public IList<string> ImagesUrl { get; set; }

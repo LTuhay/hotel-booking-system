@@ -13,17 +13,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
             _validator = new GuestReviewRequestValidator();
         }
 
-        [Fact]
-        public void ShouldHaveErrorWhenHotelIdIsZeroOrNegative()
-        {
-            var request = new GuestReviewRequest { HotelId = 0 };
-            var result = _validator.TestValidate(request);
-            result.ShouldHaveValidationErrorFor(x => x.HotelId).WithErrorMessage("HotelId must be greater than 0");
-
-            request.HotelId = -1;
-            result = _validator.TestValidate(request);
-            result.ShouldHaveValidationErrorFor(x => x.HotelId).WithErrorMessage("HotelId must be greater than 0");
-        }
 
         [Fact]
         public void ShouldHaveErrorWhenRatingIsOutsideValidRange()
@@ -58,12 +47,10 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var request = new GuestReviewRequest
             {
-                HotelId = 1,
                 Rating = 4,
                 Comment = "Great stay!"
             };
             var result = _validator.TestValidate(request);
-            result.ShouldNotHaveValidationErrorFor(x => x.HotelId);
             result.ShouldNotHaveValidationErrorFor(x => x.Rating);
             result.ShouldNotHaveValidationErrorFor(x => x.Comment);
         }

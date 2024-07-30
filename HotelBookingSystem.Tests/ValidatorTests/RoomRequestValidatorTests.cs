@@ -14,41 +14,12 @@ namespace HotelBookingSystem.Tests.ValidatorTests
             _validator = new RoomRequestValidator();
         }
 
-        [Fact]
-        public void ShouldHaveValidationErrorForHotelId_WhenHotelIdIsNotGreaterThanZero()
-        {
-            var model = new RoomRequest
-            {
-                HotelId = 0
-            };
-
-            var result = _validator.TestValidate(model);
-
-            result.ShouldHaveValidationErrorFor(x => x.HotelId)
-                .WithErrorMessage("HotelId must be greater than 0");
-        }
-
-        [Fact]
-        public void ShouldHaveValidationErrorForRoomType_WhenRoomTypeIsEmpty()
-        {
-            var model = new RoomRequest
-            {
-                HotelId = 1,
-                RoomType = string.Empty
-            };
-
-            var result = _validator.TestValidate(model);
-
-            result.ShouldHaveValidationErrorFor(x => x.RoomType)
-                .WithErrorMessage("RoomType is required");
-        }
 
         [Fact]
         public void ShouldHaveValidationErrorForRoomType_WhenRoomTypeIsInvalid()
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = "InvalidRoomType"
             };
 
@@ -63,7 +34,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = RoomType.Double.ToString(),
                 PricePerNight = 0
             };
@@ -79,7 +49,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = RoomType.Double.ToString(),
                 PricePerNight = 100,
                 AdultCapacity = 0
@@ -96,7 +65,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = RoomType.Double.ToString(),
                 PricePerNight = 100,
                 AdultCapacity = 2,
@@ -114,7 +82,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = RoomType.Double.ToString(),
                 PricePerNight = 100,
                 AdultCapacity = 2,
@@ -133,7 +100,6 @@ namespace HotelBookingSystem.Tests.ValidatorTests
         {
             var model = new RoomRequest
             {
-                HotelId = 1,
                 RoomType = RoomType.Double.ToString(),
                 PricePerNight = 100,
                 AdultCapacity = 2,

@@ -8,8 +8,6 @@ using HotelBookingSystem.Domain.Interfaces.Repository;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace HotelBookingSystem.Tests.ServiceTests
 {
@@ -50,12 +48,12 @@ namespace HotelBookingSystem.Tests.ServiceTests
         {
             var reviewRequest = new GuestReviewRequest
             {
-                HotelId = 1,
                 Rating = 5,
                 Comment = "Great place!"
             };
 
             var userId = 1;
+            var hotelId = 1;
 
             var user = new User
             {
@@ -94,7 +92,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(user);
 
-            var result = await _guestReviewService.AddReviewAsync(reviewRequest);
+            var result = await _guestReviewService.AddReviewAsync(hotelId, reviewRequest);
 
             result.Should().BeOfType<GuestReviewResponse>();
             hotel.StarRating.Should().Be(5);
@@ -104,6 +102,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
         public async Task DeleteReviewAsync_ShouldUpdateHotelRating_WhenReviewIsDeleted()
         {
             var reviewId = 1;
+            var hotelId = 1;
 
             var review = new GuestReview
             {
@@ -133,10 +132,74 @@ namespace HotelBookingSystem.Tests.ServiceTests
             _hotelRepositoryMock.Setup(x => x.UpdateAsync(It.IsAny<Hotel>()))
                 .ReturnsAsync(hotel);
 
-            await _guestReviewService.DeleteReviewAsync(reviewId);
+            await _guestReviewService.DeleteReviewAsync(hotelId, reviewId);
 
             hotel.StarRating.Should().Be(0);
         }
+
+        [Fact]
+        public async Task AddReviewAsync_ShouldThrowKeyNotFoundException_WhenHotelDoesNotExist()
+        {
+            var hotelId = 1;
+            var reviewRequest = new GuestReviewRequest { Rating = 5, Comment = "Great place!" };
+
+            _hotelRepositoryMock.Setup(x => x.GetByIdAsync(hotelId)).ReturnsAsync((Hotel)null);
+
+            Func<Task> act = async () => await _guestReviewService.AddReviewAsync(hotelId, reviewRequest);
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+            _hotelRepositoryMock.Verify(x => x.GetByIdAsync(hotelId), Times.Once);
+        }
+
+        [Fact]
+        public async Task AddReviewAsync_ShouldThrowUnauthorizedAccessException_WhenUserIsNotAuthenticated()
+        {
+            var hotelId = 1;
+            var reviewRequest = new GuestReviewRequest { Rating = 5, Comment = "Great place!" };
+            var hotel = new Hotel { HotelId = hotelId, StarRating = 0 };
+
+            _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier))
+                .Returns((Claim)null); 
+
+            _hotelRepositoryMock.Setup(x => x.GetByIdAsync(hotelId))
+                .ReturnsAsync(hotel); 
+
+            Func<Task> act = async () => await _guestReviewService.AddReviewAsync(hotelId, reviewRequest);
+            await act.Should().ThrowAsync<UnauthorizedAccessException>();
+
+            _hotelRepositoryMock.Verify(x => x.GetByIdAsync(hotelId), Times.Once);
+        }
+
+
+
+        [Fact]
+        public async Task DeleteReviewAsync_ShouldThrowKeyNotFoundException_WhenReviewDoesNotExist()
+        {
+            var reviewId = 1;
+            var hotelId = 1;
+
+            _guestReviewRepositoryMock.Setup(x => x.GetByIdAsync(reviewId)).ReturnsAsync((GuestReview)null);
+
+            Func<Task> act = async () => await _guestReviewService.DeleteReviewAsync(hotelId, reviewId);
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+            _guestReviewRepositoryMock.Verify(x => x.GetByIdAsync(reviewId), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteReviewAsync_ShouldThrowArgumentException_WhenHotelIdDoesNotMatch()
+        {
+            var reviewId = 1;
+            var incorrectHotelId = 2;
+
+            var review = new GuestReview { GuestReviewId = reviewId, HotelId = 1 };
+
+            _guestReviewRepositoryMock.Setup(x => x.GetByIdAsync(reviewId)).ReturnsAsync(review);
+
+            Func<Task> act = async () => await _guestReviewService.DeleteReviewAsync(incorrectHotelId, reviewId);
+            await act.Should().ThrowAsync<ArgumentException>();
+            _guestReviewRepositoryMock.Verify(x => x.GetByIdAsync(reviewId), Times.Once);
+        }
+
+
 
 
     }

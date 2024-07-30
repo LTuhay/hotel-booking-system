@@ -1,41 +1,52 @@
-# Visual Studio
-.vscode/
-.vs/
-*.suo
+# .NET specific files
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.vscode/
 *.user
 *.userosscache
+*.suo
 *.sln.docstates
+
+# Rider
+.idea/
 
 # Visual Studio Code
 .vscode/
 
-# DotNet
-project.lock.json
-project.fragment.lock.json
-artifacts/
-**/bin/
-**/obj/
+# Visual Studio
+.vs/
+*.ncb
+*.suo
+*.user
+*.userosscache
+*.suo
 
-# Include if you have a temp folder you want to ignore
-*~/
-*.swp
+# OS specific files
+.DS_Store
+Thumbs.db
 
-# Ignore the build results of the project
-/AirportTicketBookingSystem/bin/
-/AirportTicketBookingSystem/obj/
-/AirportTicketBookingSystem.test/bin/
-/AirportTicketBookingSystem.test/obj/
+# NuGet Packages
+*.nupkg
+*.snupkg
 
-# Others
-*.log
-*.tlog
-*.ide
-*.ide_
-*.ids
-*.pidb
-*.ilk
-*.idb
-*.cache
+# Local History
+.localhistory/
+
+# Translations
+*.po
+*.mo
+
+# Backup files
+*.bak
 *.tmp
-*.temp
-*.dat
+
+# Logs
+*.log
+
+# Exclude test results
+testresults/

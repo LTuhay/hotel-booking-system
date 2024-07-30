@@ -8,7 +8,7 @@ using HotelBookingSystem.Domain.Interfaces.Repository;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
-
+using Xunit;
 
 namespace HotelBookingSystem.Tests.ServiceTests
 {
@@ -20,7 +20,6 @@ namespace HotelBookingSystem.Tests.ServiceTests
         private readonly IMapper _mapper;
         private readonly HotelService _hotelService;
 
-
         public HotelServiceTests()
         {
             _hotelRepositoryMock = new Mock<IHotelRepository>();
@@ -31,6 +30,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             {
                 cfg.AddProfile<HotelProfile>();
                 cfg.AddProfile<RoomProfile>();
+                cfg.AddProfile<GuestReviewProfile>();  
             });
 
             _mapper = config.CreateMapper();
@@ -96,7 +96,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             result.Name.Should().Be(hotelRequest.Name);
             result.Description.Should().Be(hotelRequest.Description);
             _hotelRepositoryMock.Verify(repo => repo.GetByIdAsync(hotelId), Times.Once);
-            _hotelRepositoryMock.Verify(repo => repo.UpdateAsync(hotel), Times.Once);
+            _hotelRepositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<Hotel>()), Times.Once);
         }
 
         [Fact]
@@ -146,8 +146,6 @@ namespace HotelBookingSystem.Tests.ServiceTests
             {
                 Page = 1,
                 PageSize = 10,
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(1)
             };
 
             var hotels = new List<Hotel>
@@ -155,12 +153,13 @@ namespace HotelBookingSystem.Tests.ServiceTests
                 new Hotel { HotelId = 1, Rooms = new List<Room> { new Room { RoomId = 1, Bookings = new List<Booking>() } } }
             };
 
-            _hotelRepositoryMock.Setup(repo => repo.SearchAsync(searchParameters)).ReturnsAsync(hotels);
+            var totalResults = hotels.Count;
+            _hotelRepositoryMock.Setup(repo => repo.SearchAsync(searchParameters)).ReturnsAsync((hotels, totalResults));
 
             var result = await _hotelService.SearchHotelsAsync(searchParameters);
 
             result.Should().NotBeNull();
-            result.TotalResults.Should().Be(hotels.Count);
+            result.TotalResults.Should().Be(totalResults);
             result.Items.Should().HaveCount(hotels.Count);
         }
 
@@ -189,14 +188,14 @@ namespace HotelBookingSystem.Tests.ServiceTests
             var limit = 5;
 
             var hotels = new List<Hotel>
-                {
-                    new Hotel { HotelId = 1, Bookings = new List<Booking> { new Booking { UserId = userId, CheckOutDate = DateTime.UtcNow.AddDays(-1) } } }
-                };
+            {
+                new Hotel { HotelId = 1, Bookings = new List<Booking> { new Booking { UserId = userId, CheckOutDate = DateTime.UtcNow.AddDays(-1) } } }
+            };
 
             var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-                };
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            };
             var claimsIdentity = new ClaimsIdentity(claims, "mock");
             var user = new ClaimsPrincipal(claimsIdentity);
 
@@ -208,6 +207,39 @@ namespace HotelBookingSystem.Tests.ServiceTests
             result.Should().NotBeNull();
             result.Should().ContainSingle();
             result.First().HotelId.Should().Be(hotels.First().HotelId);
+        }
+
+        [Fact]
+        public async Task GetHotelByIdWithReviewsAsync_ShouldReturnHotelResponseWithReviews_WhenHotelExists()
+        {
+            var hotelId = 1;
+            var hotelWithReviews = new Hotel
+            {
+                HotelId = hotelId,
+                Name = "Test Hotel",
+                GuestReviews = new List<GuestReview> { new GuestReview { GuestReviewId = 1, Rating = 5, Comment = "Excellent!" } }
+            };
+
+            _hotelRepositoryMock.Setup(repo => repo.GetByIdWithReviewsAsync(hotelId)).ReturnsAsync(hotelWithReviews);
+
+            var result = await _hotelService.GetHotelByIdWithReviewsAsync(hotelId);
+
+            result.Should().NotBeNull();
+            result.HotelId.Should().Be(hotelId);
+            result.GuestReviews.Should().ContainSingle();
+            result.GuestReviews.First().Comment.Should().Be("Excellent!");
+            _hotelRepositoryMock.Verify(repo => repo.GetByIdWithReviewsAsync(hotelId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetHotelByIdWithReviewsAsync_ShouldThrowKeyNotFoundException_WhenHotelDoesNotExist()
+        {
+            var hotelId = 1;
+
+            _hotelRepositoryMock.Setup(repo => repo.GetByIdWithReviewsAsync(hotelId)).ReturnsAsync((Hotel)null);
+
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => _hotelService.GetHotelByIdWithReviewsAsync(hotelId));
+            _hotelRepositoryMock.Verify(repo => repo.GetByIdWithReviewsAsync(hotelId), Times.Once);
         }
     }
 }

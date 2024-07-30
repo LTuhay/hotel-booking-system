@@ -46,7 +46,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             var booking = new Booking
             {
                 BookingId = 1,
-                TotalPrice = 100m
+                TotalPrice = 100
             };
 
             var paymentRequest = new PaymentRequest
@@ -94,7 +94,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             {
                 PaymentId = 1,
                 BookingId = 1,
-                Amount = 100m,
+                Amount = 100,
                 Status = PaymentStatus.Completed,
                 PaymentDate = DateTime.UtcNow
             };
@@ -131,7 +131,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             {
                 PaymentId = 1,
                 BookingId = 1,
-                Amount = 100m,
+                Amount = 100,
                 Status = PaymentStatus.Pending,
                 PaymentDate = DateTime.UtcNow
             };
@@ -172,7 +172,7 @@ namespace HotelBookingSystem.Tests.ServiceTests
             {
                 PaymentId = 1,
                 BookingId = 1,
-                Amount = 100m,
+                Amount = 100,
                 Status = PaymentStatus.Pending,
                 PaymentDate = DateTime.UtcNow
             };

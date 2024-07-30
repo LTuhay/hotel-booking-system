@@ -18,7 +18,7 @@ namespace HotelBookingSystem.Domain.Entities
         public IList<HotelAmenity> Amenities { get; set; }
         public ICollection<Room> Rooms { get; set; }
         public ICollection<Booking> Bookings { get; set; }
-        public ICollection<GuestReview> GuestReviews { get; set; }
+        public ICollection<GuestReview> GuestReviews { get; set; } = new List<GuestReview>();
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

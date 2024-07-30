@@ -59,14 +59,10 @@ namespace HotelBookingSystem.Application.Services
             var hotel = await _hotelRepository.GetByIdAsync(room.HotelId);
             if (hotel == null) throw new KeyNotFoundException("Hotel not found");
 
+            CalculateRoomAvailability
+                (room, bookingRequest);
 
-            var checkInDate = bookingRequest.CheckInDate;
-            var checkOutDate = bookingRequest.CheckOutDate;
-
-            var isRoomAvailable = room.Bookings.All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate);
-            if (!isRoomAvailable) throw new InvalidOperationException("Room is already booked for the specified dates");
-
-            decimal totalPrice = CalculateTotalPrice(room, checkInDate, checkOutDate);
+            double totalPrice = CalculateTotalPrice(room, bookingRequest);
 
             var booking = _mapper.Map<Booking>(bookingRequest);
             booking.HotelId = room.HotelId;
@@ -76,19 +72,32 @@ namespace HotelBookingSystem.Application.Services
             booking.User = await _userRepository.GetByIdAsync(userId);
 
             await _bookingRepository.AddAsync(booking);
-
-            var city = await _cityRepository.GetByIdAsync(hotel.CityId);
-            if (city != null)
-            {
-                city.Visitors++;
-                await _cityRepository.UpdateAsync(city);
-            }
+            await AddCityVisitors(hotel);
 
             var bookingResponse = _mapper.Map<BookingResponse>(booking);
 
             SendEmailWithBookingDetails(booking, bookingResponse);
 
             return bookingResponse;
+        }
+
+        private static void CalculateRoomAvailability(Room room, BookingRequest bookingRequest)
+        {
+            var checkInDate = bookingRequest.CheckInDate;
+            var checkOutDate = bookingRequest.CheckOutDate;
+
+            var isRoomAvailable = room.Bookings.All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate);
+            if (!isRoomAvailable) throw new InvalidOperationException("Room is already booked for the specified dates");
+        }
+
+        private async Task AddCityVisitors(Hotel hotel)
+        {
+            var city = await _cityRepository.GetByIdAsync(hotel.CityId);
+            if (city != null)
+            {
+                city.Visitors++;
+                await _cityRepository.UpdateAsync(city);
+            }
         }
 
         private void SendEmailWithBookingDetails(Booking booking, BookingResponse bookingResponse)
@@ -98,8 +107,11 @@ namespace HotelBookingSystem.Application.Services
             _emailService.SendEmailAsync(booking.User.Email, emailSubject, emailBody);
         }
 
-        private static decimal CalculateTotalPrice(Room room, DateTime checkInDate, DateTime checkOutDate)
+        private static double CalculateTotalPrice(Room room, BookingRequest bookingRequest)
         {
+            var checkInDate = bookingRequest.CheckInDate;
+            var checkOutDate = bookingRequest.CheckOutDate;
+
             var totalNights = (checkOutDate - checkInDate).Days;
             var pricePerNight = room.FeaturedDeal && room.DiscountedPrice.HasValue
                 ? room.DiscountedPrice.Value
@@ -114,39 +126,18 @@ namespace HotelBookingSystem.Application.Services
             if (booking == null) throw new KeyNotFoundException("Booking not found");
 
             var city = await _cityRepository.GetByIdAsync(booking.Hotel.CityId);
+            await SubstractCityVisitors(city);
+            _bookingRepository.DeleteAsync(bookingId);
+        }
+
+        private async Task SubstractCityVisitors(City city)
+        {
             if (city != null)
             {
                 city.Visitors--;
                 await _cityRepository.UpdateAsync(city);
             }
-            _bookingRepository.DeleteAsync(bookingId);
         }
-
-        public async Task<BookingResponse> UpdateBookingAsync(int bookingId, BookingRequest bookingRequest)
-        {
-            var booking = await _bookingRepository.GetByIdAsync(bookingId);
-            if (booking == null) throw new KeyNotFoundException("Booking not found");
-
-            var room = await _roomRepository.GetByIdAsync(bookingRequest.RoomId);
-            if (room == null) throw new KeyNotFoundException("Room not found");
-
-            var hotel = await _hotelRepository.GetByIdAsync(room.HotelId);
-            if (hotel == null) throw new KeyNotFoundException("Hotel not found");
-
-
-            var checkInDate = bookingRequest.CheckInDate;
-            var checkOutDate = bookingRequest.CheckOutDate;
-            var totalNights = (checkOutDate - checkInDate).Days;
-            var totalPrice = totalNights * room.PricePerNight;
-
-            booking = _mapper.Map<Booking>(bookingRequest);
-            booking.TotalPrice = totalPrice;
-
-            await _bookingRepository.UpdateAsync(booking);
-
-            return _mapper.Map<BookingResponse>(booking);
-        }
-
 
         public async Task<BookingResponse> GetBookingDetailsAsync(int bookingId)
         {

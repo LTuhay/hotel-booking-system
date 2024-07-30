@@ -1,11 +1,9 @@
-﻿
-
-using HotelBookingSystem.Application.DTO.GuestReviewDTO;
+﻿using HotelBookingSystem.Application.DTO.GuestReviewDTO;
 using HotelBookingSystem.Application.DTO.RoomDTO;
 
 namespace HotelBookingSystem.Application.DTO.HotelDTO
 {
-    public class HotelResponse
+    public class HotelResponseWithReviews
     {
         public int HotelId { get; set; }
         public string Name { get; set; }
@@ -17,7 +15,6 @@ namespace HotelBookingSystem.Application.DTO.HotelDTO
         public int StarRating { get; set; }
         public string Description { get; set; }
         public string ThumbnailUrl { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public ICollection<GuestReviewResponse> GuestReviews { get; set; }
     }
 }

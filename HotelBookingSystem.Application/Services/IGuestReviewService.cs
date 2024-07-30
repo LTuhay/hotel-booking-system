@@ -6,8 +6,8 @@ namespace HotelBookingSystem.Application.Services
 {
     public interface IGuestReviewService
     {
-        Task<GuestReviewResponse> AddReviewAsync(GuestReviewRequest reviewRequest);
-        Task DeleteReviewAsync(int reviewId);
+        Task<GuestReviewResponse> AddReviewAsync(int hotelId, GuestReviewRequest reviewRequest);
+        Task DeleteReviewAsync(int hotelId, int reviewId);
 
     }
 }

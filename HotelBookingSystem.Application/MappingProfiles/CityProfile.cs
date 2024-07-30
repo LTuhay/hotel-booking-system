@@ -10,9 +10,9 @@ namespace HotelBookingSystem.Application.MappingProfiles
         public CityProfile() 
         {
             CreateMap<CityRequest, City>();
-            CreateMap<City, CityResponse>()
+            CreateMap<City, CityResponseWithNumberOfHotels>()
                 .ForMember(dest => dest.NumberOfHotels, opt => opt.MapFrom(src => src.Hotels != null ? src.Hotels.Count : 0));
-
+            CreateMap<City, CityResponse>();
         }
 
 

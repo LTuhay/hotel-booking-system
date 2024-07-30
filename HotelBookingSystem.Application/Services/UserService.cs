@@ -29,9 +29,7 @@ namespace HotelBookingSystem.Application.Services
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
-            {
                 throw new KeyNotFoundException("User not found");
-            }
             return _mapper.Map<UserResponse>(user);
         }
 
@@ -39,9 +37,7 @@ namespace HotelBookingSystem.Application.Services
         {
 
             if (await _userRepository.GetByEmailAsync(request.Email) != null)
-            {
                 throw new InvalidOperationException("Email already in use");
-            }
 
             var user = _mapper.Map<User>(request);
             var salt = _passwordHasher.GenerateSalt();

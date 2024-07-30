@@ -25,8 +25,6 @@ namespace HotelBookingSystem.Application.Services
             if (booking == null) throw new KeyNotFoundException("Booking not found");
 
             var payment = _mapper.Map<Payment>(paymentRequest);
-            payment.Status = PaymentStatus.Pending;
-            payment.PaymentDate = DateTime.UtcNow;
             payment.Amount = booking.TotalPrice;
 
             await _paymentRepository.AddAsync(payment);

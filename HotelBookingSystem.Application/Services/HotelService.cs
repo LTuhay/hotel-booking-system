@@ -42,12 +42,14 @@ namespace HotelBookingSystem.Application.Services
             if (hotel == null)
                 throw new KeyNotFoundException("Hotel not found");
 
-            _mapper.Map(request, hotel);
+            _mapper.Map(request, hotel);  
             hotel.UpdatedAt = DateTime.UtcNow;
 
             var updatedHotel = await _hotelRepository.UpdateAsync(hotel);
+
             return _mapper.Map<HotelResponse>(updatedHotel);
         }
+
 
         public async Task DeleteHotelAsync(int hotelId)
         {
@@ -65,15 +67,21 @@ namespace HotelBookingSystem.Application.Services
             return _mapper.Map<HotelResponse>(hotel);
         }
 
+        public async Task<HotelResponseWithReviews> GetHotelByIdWithReviewsAsync(int hotelId)
+        {
+            var hotel = await _hotelRepository.GetByIdWithReviewsAsync(hotelId);
+            if (hotel == null)
+                throw new KeyNotFoundException("Hotel not found");
+
+            return _mapper.Map<HotelResponseWithReviews>(hotel);
+        }
+
         public async Task<IPaginatedList<HotelResponse>> SearchHotelsAsync(HotelSearchParameters searchParameters)
         {
-            var hotels = await _hotelRepository.SearchAsync(searchParameters);
+            var (hotels, totalResults) = await _hotelRepository.SearchAsync(searchParameters);
 
-            var totalResults = hotels.Count;
             var totalPages = (int)Math.Ceiling(totalResults / (double)searchParameters.PageSize);
             var hotelResponses = _mapper.Map<List<HotelResponse>>(hotels);
-
-            CheckRoomsAvailability(searchParameters, hotels, hotelResponses);
 
             var paginatedList = new PaginatedList<HotelResponse>
             {
@@ -86,32 +94,6 @@ namespace HotelBookingSystem.Application.Services
 
             return paginatedList;
         }
-
-        private static void CheckRoomsAvailability(HotelSearchParameters searchParameters, IList<Hotel> hotels, List<HotelResponse> hotelResponses)
-        {
-            DateTime? checkInDate = searchParameters.CheckInDate != null ? searchParameters.CheckInDate : null;
-            DateTime? checkOutDate = searchParameters.CheckOutDate != null ? searchParameters.CheckOutDate : null;
-
-            foreach (var hotelResponse in hotelResponses)
-            {
-                var hotel = hotels.First(h => h.HotelId == hotelResponse.HotelId);
-                foreach (var roomResponse in hotelResponse.Rooms)
-                {
-                    var room = hotel.Rooms.First(r => r.RoomId == roomResponse.RoomId);
-                    if (checkInDate.HasValue && checkOutDate.HasValue)
-                    {
-                        roomResponse.IsAvailable = room.Bookings
-                            .All(b => b.CheckOutDate <= checkInDate || b.CheckInDate >= checkOutDate);
-                    }
-                    else
-                    {
-                        roomResponse.IsAvailable = room.Bookings
-                            .All(b => b.CheckOutDate <= DateTime.Now || b.CheckInDate >= DateTime.Now);
-                    }
-                }
-            }
-        }
-
         public async Task<IEnumerable<HotelResponse>> GetFeaturedDealsAsync(int limit)
         {
             var hotels = await _hotelRepository.GetFeaturedDealsAsync(limit);
