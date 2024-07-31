@@ -30,9 +30,8 @@ namespace HotelBookingSystem.Infrastructure.Repository
 
             if (searchParameters.CheckInDate != null && searchParameters.CheckOutDate != null)
             {
-
-                query = query.Where(r => r.Bookings.All(b => b.CheckOutDate <= searchParameters.CheckInDate || b.CheckInDate >= searchParameters.CheckOutDate));
-
+                query = query.Where(r => !r.Bookings.Any(b =>
+                    b.CheckInDate < searchParameters.CheckOutDate && b.CheckOutDate > searchParameters.CheckInDate));
             }
 
             if (searchParameters.Adults.HasValue)
